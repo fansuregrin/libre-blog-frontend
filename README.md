@@ -1,6 +1,6 @@
 # libre_blog_front_end
 
-This template should help get you started developing with Vue 3 in Vite.
+This the front-end implementation [libre-blog](https://github.com/fansuregrin/libre-blog).
 
 ## Recommended IDE Setup
 
