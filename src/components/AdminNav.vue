@@ -6,7 +6,7 @@
 <script>
 import { h } from 'vue';
 import { NMenu, NIcon, createDiscreteApi } from 'naive-ui';
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 const { message } = createDiscreteApi(['message']);
 
@@ -57,9 +57,6 @@ const menuOptions = [
 
 export default {
   name: 'AdminNav',
-  created() {
-    this.router = useRouter();
-  },
   data() {
     return {
       menuOptions
@@ -69,7 +66,7 @@ export default {
     logout() {
       sessionStorage.removeItem("userToken");
       message.info("您已经登出");
-      this.router.push({name: 'Login'});
+      this.$router.push({name: 'Login'});
     },
     onChange(key, item) {
       if (key === 'logout') {

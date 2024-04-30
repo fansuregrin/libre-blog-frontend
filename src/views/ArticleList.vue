@@ -33,7 +33,6 @@ import { defineComponent } from 'vue';
 import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
 import { CalendarAlt, UserAlt } from '@vicons/fa'
 import { createDiscreteApi } from 'naive-ui';
-import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Header from '@/components/Nav.vue';
 
@@ -54,7 +53,7 @@ export default defineComponent({
   },
   methods: {
     goToPage(page) {
-      this.router.push(`/blog/page/${page}`);
+      this.$router.push(`/blog/page/${page}`);
     },
     fetchData(page) {
       console.log(`获取第${page}页...`)
@@ -76,11 +75,10 @@ export default defineComponent({
       });
     },
     goToArticle(id) {
-      this.router.push(`/blog/article/${id}`);
+      this.$router.push(`/blog/article/${id}`);
     }
   },
   created() {
-    this.router = useRouter();
     this.$watch(
       () => this.$route.params.page,
       (newVal, oldVal) => { this.fetchData(newVal) },

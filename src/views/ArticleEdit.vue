@@ -19,7 +19,6 @@
 import { NFlex, NInput, NForm, NFormItem } from 'naive-ui';
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 const { message } = createDiscreteApi(['message']);
 
@@ -33,7 +32,7 @@ export default {
   methods: {
     fetchData() {
       this.article = null;
-      const id = this.$route.params.id;
+      const id = this.$router.params.id;
       console.log(`获取id为${id}的文章...`);
       
       axios.get(
@@ -55,7 +54,7 @@ export default {
     },
     submitData() {
       const userToken = sessionStorage.getItem('userToken');
-      const id = this.$route.params.id;
+      const id = this.$router.params.id;
       axios.post(
         '/api/blog/article/update',
         this.article,
@@ -65,17 +64,23 @@ export default {
           }
         }
       ).then(response => {
-        if (response.data.status == 0) {
+        if (response.data.status === 0) {
           message.info('更新成功');
-          this.router.push('/blog/article/'+id);
+          this.$router.push('/blog/article/'+id);
+        } else if (response.data.status === 3) {
+          message.error('登录失效，请重新登录');
+          sessionStorage.removeItem('userToken');
+          this.$router.push({name: 'Login'});
+        } else {
+          message.error('更新失败');
         }
       }).catch(error => {
+        console.log(error.message);
         message.info('更新失败');
       });
     }
   },
   created() {
-    this.router = useRouter();
     this.$watch(
       () => this.$route.params.id,
       () => this.fetchData(),

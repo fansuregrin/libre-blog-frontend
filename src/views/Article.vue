@@ -1,26 +1,28 @@
 <template>
   <Nav></Nav>
-  <n-card v-if="article" :title="article.title" class="article">
-    <n-flex class="article-meta-info">
-      <span>
-        <n-icon><user-alt /></n-icon>
-        {{ article.author_name }}
-      </span>
-      <span>
-        <n-icon><calendar-alt /></n-icon>
-        {{ article.create_time }}
-      </span>
-      <span>
-        <n-icon><hashtag /></n-icon>
-        {{ article.category_name }}
-      </span>
-      <span v-if="article.editable">
-        <n-icon><edit/></n-icon>
-        <a :href="editLink">修改</a>
-      </span>
-    </n-flex>
-    <div v-html="render_content()"></div>
-  </n-card>
+  <div class="container">
+    <n-card v-if="article" :title="article.title" class="article">
+      <n-flex class="article-meta-info">
+        <span>
+          <n-icon><user-alt /></n-icon>
+          {{ article.author_name }}
+        </span>
+        <span>
+          <n-icon><calendar-alt /></n-icon>
+          {{ article.create_time }}
+        </span>
+        <span>
+          <n-icon><hashtag /></n-icon>
+          {{ article.category_name }}
+        </span>
+        <span v-if="article.editable">
+          <n-icon><edit/></n-icon>
+          <a :href="editLink">修改</a>
+        </span>
+      </n-flex>
+      <div v-html="render_content()"></div>
+    </n-card>
+  </div>
 </template>
 
 <script>
@@ -81,6 +83,7 @@
             this.article = response.data.article;
             this.editLink = '/admin/edit-article/' + this.article.id;
           } else {
+            console.log(response.data.status);
             message.error("获取文章失败");
           }
         })
@@ -128,10 +131,16 @@
 
 <style>
 .article {
-  width: 60%;
+  width: 80%;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .article {
+    width: 100%;
+  }
 }
 
 .article-meta-info {

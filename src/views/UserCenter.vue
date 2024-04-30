@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
 import { NCard, NFlex, NButton, NAvatar } from 'naive-ui';
 import { NForm, NFormItem, NInput, NInputNumber } from 'naive-ui'
 import { createDiscreteApi } from 'naive-ui';
@@ -121,14 +120,11 @@ export default {
   components: {
     AdminNav, AdminFoot
   },
-  created() {
-    this.router = useRouter();
-  },
   methods: {
     getUserInfo() {
       const userToken = sessionStorage.getItem('userToken');
       if (userToken === '') {
-        this.router.push({name: 'Login'});
+        this.$outer.push({name: 'Login'});
       }
       axios.get(
         '/api/user/center',
@@ -144,7 +140,7 @@ export default {
           message.error('获取用户信息失败');
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
-          this.router.push({name: 'Login'});
+          this.$router.push({name: 'Login'});
         }  
         console.log('data:', response.data)
         if (response.data.status == 0) {
@@ -154,7 +150,7 @@ export default {
           message.error('获取用户信息失败');
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
-          this.router.push({name: 'Login'});
+          this.$router.push({name: 'Login'});
         }
       })
       .catch (error => {
@@ -165,7 +161,7 @@ export default {
     updateUserInfo() {
       const userToken = sessionStorage.getItem('userToken');
       if (userToken === '') {
-        this.router.push({name: 'Login'});
+        this.$router.push({name: 'Login'});
       }
       axios.post(
         '/api/user/update',
@@ -183,7 +179,8 @@ export default {
           message.success('您的档案已更新');
         } else if (response.data.status == 3) {
           message.error('登录失效');
-          this.router.push({name: 'Login'});
+          sessionStorage.removeItem('userToken');
+          this.$router.push({name: 'Login'});
         } else if (response.data.status == 4) {
           message.error(response.data.error);
         } else if (response.data.status == 5) {
@@ -198,7 +195,7 @@ export default {
     updatePassword() {
       const userToken = sessionStorage.getItem('userToken');
       if (userToken === '') {
-        this.router.push({name: 'Login'});
+        this.$router.push({name: 'Login'});
       }
       if (this.passwdForm.newPassword != this.passwdForm.repeatPassword) {
         message.warning('两次密码不一致');
@@ -219,7 +216,8 @@ export default {
           message.success('您的密码已更新');
         } else if (response.data.status == 3) {
           message.error('登录失效');
-          this.router.push({name: 'Login'});
+          sessionStorage.removeItem('userToken');
+          this.$router.push({name: 'Login'});
         } else if (response.data.status == 4) {
           message.error(response.data.error);
         } else {

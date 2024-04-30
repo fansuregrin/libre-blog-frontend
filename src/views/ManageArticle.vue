@@ -14,16 +14,18 @@
         :checkedRowKeys="checkedRowKeys"
         @update:checked-row-keys="handleCheck"
       />
-      <n-p>{{ checkedRowKeys.length }}</n-p>
     </n-flex>
   </div>
+  <admin-foot></admin-foot>
 </template>
 
 <script>
-  import AdminNav from '@/components/AdminNav.vue'
   import { NFlex, NDataTable, NDropdown, NButton } from 'naive-ui';
   import { createDiscreteApi } from 'naive-ui';
+  import axios from 'axios';
   import '@/assets/main.css'
+  import AdminNav from '@/components/AdminNav.vue'
+  import AdminFoot from '@/components/AdminFoot.vue';
 
   const { dialog, message } = createDiscreteApi(['dialog', 'message']);
   const createColumns = () => {
@@ -51,6 +53,7 @@
   };
 
   const data = Array.from({length: 30}).map((_, index) => ({
+    id: index,
     title: `嘿嘿嘿 ${index}`,
     author: '小华',
     category: '随笔'
@@ -67,19 +70,17 @@
     }
   ];
 
-  
-
   export default {
     name: 'ManageArticle',
     components: {
-      AdminNav
+      AdminNav, AdminFoot
     },
     data() {
       return {
         data,
         columns: createColumns(),
         pagination: {pageSize: 8},
-        rowKey: (row) => row.title,
+        rowKey: (row) => row.id,
         checkedRowKeys: [],
         options
       };
@@ -90,17 +91,53 @@
       },
       handleSelect(key) {
         if (key === 'delete') {
-          console.log('deleting');
+          console.log('deleting...');
           dialog.warning({
             title: '警告',
             content: '您确定删除这些文章吗？',
             positiveText: '确定',
             negativeText: '取消',
             onPositiveClick: () => {
-              message.success('成功删除');
+              if (this.checkedRowKeys.length <= 0) {
+                message.warning('没有文章被删除');
+                return;
+              }
+              this.deleteArticles();
             }
           });
         }
+      },
+      deleteArticles() {
+        const userToken = sessionStorage.getItem('userToken');
+        axios.post(
+          '/api/blog/article/delete',
+          {
+            ids: this.checkedRowKeys
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
+          }
+        ).then(response => {
+          console.log('data.status:', response.data.status);
+          if (response.data.status === 0) {
+            this.data = this.data.filter(
+              item => !this.checkedRowKeys.includes(item.id)
+            );
+            this.checkedRowKeys = [];
+            message.success('删除成功');
+          } else if (response.data.status === 3) {
+            sessionStorage.removeItem('userToken');
+            message.error('登录失效，请重新登录');
+            this.$router.push({name: 'Login'});
+          } else {
+            message.error('删除失败');
+          }
+        }).catch(error => {
+          console.log(error.message);
+          message.error('删除失败');
+        });
       }
     }
   };
