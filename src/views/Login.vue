@@ -146,7 +146,7 @@
           
           if(response.data.status == 0){
             message.success("注册成功，请登录");
-            this.selectedTab = "sign";
+            this.selectedTab = "login";
           }else if(response.data.status == 1){
             message.warning(response.data.warning);
           }else if(response.data.status == 2){
