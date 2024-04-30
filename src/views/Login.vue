@@ -6,32 +6,32 @@
       animated
       pane-wrapper-style="margin: 0 -4px"
     >
-      <n-tab-pane name="signin" tab="登录">
+      <n-tab-pane name="login" tab="登录">
         <n-form :rules="rules" :model="loginForm">
           <n-form-item-row label="用户名" path="username">
-            <n-input v-model:value="loginForm.username" placeholder="请输入用户名"/>
+            <n-input v-model:value="loginForm.username" placeholder="请输入用户名" name="username"/>
           </n-form-item-row>
           <n-form-item-row label="密码" path="password">
-            <n-input type="password" v-model:value="loginForm.password" placeholder="请输入密码"/>
+            <n-input type="password" v-model:value="loginForm.password" placeholder="请输入密码" name="password"/>
           </n-form-item-row>
         </n-form>
         <n-button type="primary" block secondary strong @click="submitLoginForm">
           登录
         </n-button>
       </n-tab-pane>
-      <n-tab-pane name="signup" tab="注册">
+      <n-tab-pane name="sign" tab="注册">
         <n-form :model="signForm" :rules="rules">
           <n-form-item-row label="用户名" path="username">
-            <n-input v-model:value="signForm.username" placeholder="请输入用户名"/>
+            <n-input v-model:value="signForm.username" placeholder="请输入用户名" name="username"/>
           </n-form-item-row>
           <n-form-item-row label="邮箱" path="email">
-            <n-input type="email" v-model:value="signForm.email" placeholder="请输入邮箱"/>
+            <n-input type="email" v-model:value="signForm.email" placeholder="请输入邮箱" name="email"/>
           </n-form-item-row>
           <n-form-item-row label="密码" path="password1" rule-path="password">
-            <n-input type="password" v-model:value="signForm.password1" placeholder="请输入密码"/>
+            <n-input type="password" v-model:value="signForm.password1" placeholder="请输入密码" name="password1"/>
           </n-form-item-row>
-          <n-form-item-row label="重复密码" path="password2" rule-path="password">
-            <n-input type="password" v-model:value="signForm.password2" placeholder="请输入密码"/>
+          <n-form-item-row label="重复密码" path="password2" rule-path="repeatPassword">
+            <n-input type="password" v-model:value="signForm.password2" placeholder="请输入密码" name="password2"/>
           </n-form-item-row>
           
         </n-form>
@@ -44,41 +44,82 @@
 </template>
 
 <script>
-  import { useMessage } from "naive-ui";
-  import { ref, onMounted, defineComponent } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { createDiscreteApi } from "naive-ui";
   import axios from 'axios';
+
+  const { message } = createDiscreteApi(['message']);
   
-  export default defineComponent({
+  export default {
     name: 'Login',
-    setup() {
-      const router = useRouter();
-      const message = useMessage();
-      const loginForm = ref({
-        username: '',
-        password: ''
-      });
-      const signForm = ref({
-        username: '',
-        password1: '',
-        password2: '',
-        email: ''
-      });
-      const selectedTab = ref('signin');
-  
+    data() {
+      return {
+        loginForm: {
+          username: '',
+          password: ''
+        },
+        signForm: {
+          username: '',
+          password1: '',
+          password2: '',
+          email: ''
+        },
+        selectedTab: 'login',
+        rules: {
+          username: {
+            required: true,
+            message: "请输入用户名",
+            trigger: ["blur", "input"]
+          },
+          password: [
+            {
+              required: true,
+              message: "请输入密码",
+              trigger: ["blur", "input"]
+            },
+            {
+              validator: this.validatePasswordLength,
+              message: "密码长度至少为6位",
+              trigger: ["input", "blur"]
+            }
+          ],
+          repeatPassword: [
+          {
+              required: true,
+              message: "请输入密码",
+              trigger: ["blur", "input"]
+            },
+            {
+              validator: this.validatePasswordLength,
+              message: "密码长度至少为6位",
+              trigger: ["input", "blur"]
+            },
+            {
+              validator: this.validatePasswordSame,
+              message: "两次密码输入不一致",
+              trigger: ["input", "blur"]
+            }
+          ],
+          email: {
+            required: true,
+            message: "请输入邮箱",
+            trigger: ["blur", "input"]
+          },
+        }
+      };
+    },
+    methods: {
       // 定义登录方法
-      const login = () => {
+      login() {
         axios.post('/api/login', {
-          username: loginForm.value.username,
-          password: loginForm.value.password
+          username: this.loginForm.username,
+          password: this.loginForm.password
         })
         .then(response => {
           console.log("response status:", response.status);
           console.log("data:", response.data);
           if (response.data.status == 0) {
             sessionStorage.setItem('userToken', response.data.token);
-            console.log("userToken:", sessionStorage.getItem('userToken'))
-            router.push({name: 'UserCenter'});
+            this.$router.push({name: 'UserCenter'});
           } else {
             message.error('用户名或密码错误');
           }
@@ -93,20 +134,19 @@
             console.log('Error:', error.message);
           }
         });
-      };
-  
-      const register = () => {
+      },
+      register() {
         axios.post('/api/user/add', {
-          username: signForm.value.username,
-          password: signForm.value.password1,
-          email: signForm.value.email
+          username: this.signForm.username,
+          password: this.signForm.password1,
+          email: this.signForm.email
         })
         .then(response => {
           console.log(response.data);
           
           if(response.data.status == 0){
             message.success("注册成功，请登录");
-            selectedTab.value = "signin";
+            this.selectedTab = "sign";
           }else if(response.data.status == 1){
             message.warning(response.data.warning);
           }else if(response.data.status == 2){
@@ -117,90 +157,63 @@
         })
         .catch(error => {
           message.error('注册失败');
-          console.error('注册失败:', error);
+          console.error('注册失败:', error.message);
         });
-      };
-
-      const checkLoginStatus = () => {
+      },
+      checkLoginStatus() {
         const token = sessionStorage.getItem('userToken');
         if (token) {
-          console.log("Already logged in, userToken:", token)
-          router.push({ name: 'UserCenter' });
+          console.log("Already logged in!")
+          this.$router.push({ name: 'UserCenter' });
         }
-      }
-  
+      },
       // 定义提交登录表单方法
-      const submitLoginForm = () => {
-        console.log(loginForm.value);
+      submitLoginForm() {
+        console.log(this.loginForm);
   
-        if (loginForm.value.username.trim() === '') {
+        if (this.loginForm.username.trim() === '') {
           message.error('请输入用户名');
           return;
         }
-        if (loginForm.value.password.trim() === '') {
+        if (this.loginForm.password.trim() === '') {
           message.error('请输入密码');
           return;
         }
-        
-        // 继续后续逻辑
-        login();
-      };
-  
+        this.login();
+      },
       // 定义提交注册表单方法
-      const submitSignForm = () => {
-        console.log(signForm.value);
+      submitSignForm() {
+        console.log(this.signForm);
   
-        if (signForm.value.username.trim() === '') {
+        if (this.signForm.username.trim() === '') {
           message.error('请输入用户名');
           return;
         }
-        if (signForm.value.email.trim() === '') {
+        if (this.signForm.email.trim() === '') {
           message.error('请输入邮箱');
           return;
         }
-        if (signForm.value.password1.trim() === '') {
+        if (this.signForm.password1.trim() === '') {
           message.error('请输入密码');
           return;
         }
-        if (signForm.value.password1.trim() !== signForm.value.password2.trim()) {
+        if (this.signForm.password1.trim() !== this.signForm.password2.trim()) {
           message.error('两次密码不一致');
           return;
         }
-        // 继续后续逻辑
-        register();
-      };
-  
-      onMounted(() => {
-        checkLoginStatus();
-      });
-  
-      // 返回需要在模板中使用的数据和方法
-      return {
-        loginForm,
-        signForm,
-        submitLoginForm,
-        submitSignForm,
-        selectedTab,
-        rules: {
-          username: {
-            required: true,
-            message: "请输入用户名",
-            trigger: ["blur", "input"]
-          },
-          password: {
-            required: true,
-            message: "请输入密码",
-            trigger: ["blur", "input"]
-          },
-          email: {
-            required: true,
-            message: "请输入邮箱",
-            trigger: ["blur", "input"]
-          },
-        }
-      };
+        this.register();
+      },
+      validatePasswordLength(rule, value) {
+        return value!=null && value.length >= 6;
+      },
+      validatePasswordSame(rule, value) {
+        return value === this.signForm.password1;
+      }
     },
-  });
+    mounted() {
+      this.checkLoginStatus();
+    }
+  };
 </script>
 
 <style scoped>

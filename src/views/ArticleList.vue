@@ -32,10 +32,12 @@
 import { defineComponent } from 'vue';
 import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
 import { CalendarAlt, UserAlt } from '@vicons/fa'
-import { useMessage } from 'naive-ui';
+import { createDiscreteApi } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Header from '@/components/Nav.vue';
+
+const { message } = createDiscreteApi(['message']);
 
 export default defineComponent({
   name: 'ArticleList',
@@ -65,12 +67,12 @@ export default defineComponent({
           this.num_pages = response.data.num_pages;
           this.articles = response.data.articles;
         } else {
-          this.message.error('获取文章失败');
+          message.error('获取文章失败');
         }
       })
       .catch(error => {
         console.log(error);
-        this.message.error('获取文章失败');
+        message.error('获取文章失败');
       });
     },
     goToArticle(id) {
@@ -78,7 +80,6 @@ export default defineComponent({
     }
   },
   created() {
-    this.message = useMessage();
     this.router = useRouter();
     this.$watch(
       () => this.$route.params.page,

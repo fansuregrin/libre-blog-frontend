@@ -56,11 +56,13 @@
 import { useRouter } from 'vue-router';
 import { NCard, NFlex, NButton, NAvatar } from 'naive-ui';
 import { NForm, NFormItem, NInput, NInputNumber } from 'naive-ui'
-import { useMessage } from 'naive-ui';
+import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 import AdminNav from '@/components/AdminNav.vue'
 import AdminFoot from '@/components/AdminFoot.vue';
 import '@/assets/main.css'
+
+const { message } = createDiscreteApi(['message'])
 
 export default {
   name: 'UserCenter',
@@ -121,7 +123,6 @@ export default {
   },
   created() {
     this.router = useRouter();
-    this.message = useMessage();
   },
   methods: {
     getUserInfo() {
@@ -140,7 +141,7 @@ export default {
       .then( response => {
         console.log('response status:', response.status);
         if (response.status != 200 || response.data == null) {
-          this.message.error('获取用户信息失败');
+          message.error('获取用户信息失败');
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
           this.router.push({name: 'Login'});
@@ -150,14 +151,14 @@ export default {
           this.userInfo = response.data.user;
           this.loading = false;
         } else {
-          this.message.error('获取用户信息失败');
+          message.error('获取用户信息失败');
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
           this.router.push({name: 'Login'});
         }
       })
       .catch (error => {
-        this.message.error('获取用户信息失败');
+        message.error('获取用户信息失败');
         console.log(error);
       });
     },
@@ -179,19 +180,19 @@ export default {
         }
       ).then( response => {
         if (response.data.status == 0) {
-          this.message.success('您的档案已更新');
+          message.success('您的档案已更新');
         } else if (response.data.status == 3) {
-          this.message.error('登录失效');
+          message.error('登录失效');
           this.router.push({name: 'Login'});
         } else if (response.data.status == 4) {
-          this.message.error(response.data.error);
+          message.error(response.data.error);
         } else if (response.data.status == 5) {
-          this.message.error(response.data.error);
+          message.error(response.data.error);
         } else {
-          this.message.error('更新档案失败');
+          message.error('更新档案失败');
         }
       }).catch( error => {
-        this.message.error('更新档案失败');
+        message.error('更新档案失败');
       })
     },
     updatePassword() {
@@ -200,7 +201,7 @@ export default {
         this.router.push({name: 'Login'});
       }
       if (this.passwdForm.newPassword != this.passwdForm.repeatPassword) {
-        this.message.warning('两次密码不一致');
+        message.warning('两次密码不一致');
         return;
       }
       axios.post(
@@ -215,17 +216,17 @@ export default {
         }
       ).then( response => {
         if (response.data.status == 0) {
-          this.message.success('您的密码已更新');
+          message.success('您的密码已更新');
         } else if (response.data.status == 3) {
-          this.message.error('登录失效');
+          message.error('登录失效');
           this.router.push({name: 'Login'});
         } else if (response.data.status == 4) {
-          this.message.error(response.data.error);
+          message.error(response.data.error);
         } else {
-          this.message.error('更新密码失败');
+          message.error('更新密码失败');
         }
       }).catch( error => {
-        this.message.error('更新密码失败');
+        message.error('更新密码失败');
       })
     },
     validatePasswordLength(rule, value) {

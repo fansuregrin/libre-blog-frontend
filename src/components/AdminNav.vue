@@ -5,8 +5,10 @@
   
 <script>
 import { h } from 'vue';
-import { NMenu, NIcon, useMessage } from 'naive-ui';
+import { NMenu, NIcon, createDiscreteApi } from 'naive-ui';
 import { RouterLink, useRouter } from 'vue-router';
+
+const { message } = createDiscreteApi(['message']);
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -56,7 +58,6 @@ const menuOptions = [
 export default {
   name: 'AdminNav',
   created() {
-    this.message = useMessage();
     this.router = useRouter();
   },
   data() {
@@ -67,7 +68,7 @@ export default {
   methods: {
     logout() {
       sessionStorage.removeItem("userToken");
-      this.message.info("您已经登出");
+      message.info("您已经登出");
       this.router.push({name: 'Login'});
     },
     onChange(key, item) {

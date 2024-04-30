@@ -2,7 +2,5 @@
 </script>
 
 <template>
-  <n-message-provider>
-    <router-view :key="$route.fullPath"/>
-  </n-message-provider>
+  <router-view :key="$route.fullPath"/>
 </template>

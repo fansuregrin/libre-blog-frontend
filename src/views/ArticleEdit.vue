@@ -17,9 +17,11 @@
 
 <script>
 import { NFlex, NInput, NForm, NFormItem } from 'naive-ui';
-import { useMessage } from 'naive-ui';
+import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+
+const { message } = createDiscreteApi(['message']);
 
 export default {
   name: 'ArticleEdit',
@@ -43,12 +45,12 @@ export default {
           console.log('获取文章成功');
           this.article = response.data.article;
         } else {
-          this.message.error("获取文章失败");
+          message.error("获取文章失败");
         }
       })
       .catch(error => {
         console.log(error.message);
-        this.message.error("获取文章失败");
+        message.error("获取文章失败");
       });
     },
     submitData() {
@@ -64,16 +66,15 @@ export default {
         }
       ).then(response => {
         if (response.data.status == 0) {
-          this.message.info('更新成功');
+          message.info('更新成功');
           this.router.push('/blog/article/'+id);
         }
       }).catch(error => {
-        this.message.info('更新失败');
+        message.info('更新失败');
       });
     }
   },
   created() {
-    this.message = useMessage();
     this.router = useRouter();
     this.$watch(
       () => this.$route.params.id,

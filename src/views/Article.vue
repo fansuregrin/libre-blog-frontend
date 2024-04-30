@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { useMessage, NCard, NFlex } from 'naive-ui';
+  import { NCard, NFlex, createDiscreteApi } from 'naive-ui';
   import { CalendarAlt, UserAlt, Hashtag, Edit } from '@vicons/fa';
   import axios from 'axios';
   import { marked } from 'marked';
@@ -32,6 +32,8 @@
   import hljs from 'highlight.js';
   import 'highlight.js/styles/github.css'
   import Nav from '@/components/Nav.vue';
+
+  const { message } = createDiscreteApi(['message']);
 
   export default {
     name: 'Article',
@@ -59,7 +61,6 @@
     },
     methods: {
       fetchData() {
-        const message = useMessage();
         this.error = this.article = null
         this.loading = true
         const id = this.$route.params.id;
