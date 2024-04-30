@@ -47,8 +47,8 @@
         <n-skeleton v-if="loading" height="100px" :sharp="false"/>
         
       </n-card>
-      <n-button type="primary" @click="logout">退出登录</n-button>
     </n-flex>
+    <admin-foot></admin-foot>
   </div>
 </template>
 
@@ -59,6 +59,7 @@ import { NForm, NFormItem, NInput, NInputNumber } from 'naive-ui'
 import { useMessage } from 'naive-ui';
 import axios from 'axios';
 import AdminNav from '@/components/AdminNav.vue'
+import AdminFoot from '@/components/AdminFoot.vue';
 import '@/assets/main.css'
 
 export default {
@@ -116,18 +117,13 @@ export default {
     };
   },
   components: {
-    AdminNav
+    AdminNav, AdminFoot
   },
   created() {
     this.router = useRouter();
     this.message = useMessage();
   },
   methods: {
-    logout() {
-      sessionStorage.removeItem("userToken");
-      this.message.info("您已经登出");
-      this.router.push({name: 'Login'});
-    },
     getUserInfo() {
       const userToken = sessionStorage.getItem('userToken');
       if (userToken === '') {
@@ -233,7 +229,7 @@ export default {
       })
     },
     validatePasswordLength(rule, value) {
-      return value.length >= 6;
+      return value!=null && value.length >= 6;
     },
     validatePasswordSame(rule, value) {
       return value === this.passwdForm.newPassword;

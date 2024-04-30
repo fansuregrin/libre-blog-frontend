@@ -1,11 +1,12 @@
 <template>
-  <n-menu :options="menuOptions" mode="horizontal" responsive></n-menu>
+  <n-menu :options="menuOptions" mode="horizontal" responsive @update:value="onChange">
+  </n-menu>
 </template>
   
 <script>
 import { h } from 'vue';
-import { NMenu, NIcon } from 'naive-ui';
-import { RouterLink } from 'vue-router';
+import { NMenu, NIcon, useMessage } from 'naive-ui';
+import { RouterLink, useRouter } from 'vue-router';
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -46,15 +47,35 @@ const menuOptions = [
       }
     ]
   },
+  {
+    label: '登出',
+    key: 'logout'
+  }
 ];
 
 export default {
   name: 'AdminNav',
+  created() {
+    this.message = useMessage();
+    this.router = useRouter();
+  },
   data() {
     return {
       menuOptions
     }
   },
+  methods: {
+    logout() {
+      sessionStorage.removeItem("userToken");
+      this.message.info("您已经登出");
+      this.router.push({name: 'Login'});
+    },
+    onChange(key, item) {
+      if (key === 'logout') {
+        this.logout();
+      }
+    }
+  }
 }
 </script>
 
