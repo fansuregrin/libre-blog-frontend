@@ -1,24 +1,28 @@
 <template>
+  <admin-nav></admin-nav>
   <n-flex v-if="article" class="edit-area">
     <n-form size="large" class="edit-form">
       <n-form-item label="标题">
         <n-input v-model:value="article.title"></n-input>
       </n-form-item>
       <n-form-item label="摘要">
-        <n-input v-model:value="article.excerpt"></n-input>
+        <n-input type="textarea" autosize v-model:value="article.excerpt"></n-input>
       </n-form-item>
       <n-form-item label="内容">
-        <n-input type="textarea" v-model:value="article.content"></n-input>
+        <n-input type="textarea" :autosize="textareSize" v-model:value="article.content"></n-input>
       </n-form-item>
     </n-form>
     <n-button @click="submitData">提交</n-button>
   </n-flex>
+  <admin-foot></admin-foot>
 </template>
 
 <script>
 import { NFlex, NInput, NForm, NFormItem } from 'naive-ui';
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
+import AdminNav from '@/components/AdminNav.vue';
+import AdminFoot from '@/components/AdminFoot.vue';
 
 const { message } = createDiscreteApi(['message']);
 
@@ -27,12 +31,19 @@ export default {
   data() {
     return {
       article: null,
+      textareSize: {
+        minRows: 1,
+        maxRows: 20
+      }
     };
+  },
+  components: {
+    AdminNav, AdminFoot
   },
   methods: {
     fetchData() {
       this.article = null;
-      const id = this.$router.params.id;
+      const id = this.$route.params.id;
       console.log(`获取id为${id}的文章...`);
       
       axios.get(
@@ -54,7 +65,7 @@ export default {
     },
     submitData() {
       const userToken = sessionStorage.getItem('userToken');
-      const id = this.$router.params.id;
+      const id = this.$route.params.id;
       axios.post(
         '/api/blog/article/update',
         this.article,
