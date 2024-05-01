@@ -146,7 +146,7 @@
         ).then(response => {
           console.log('data.status:', response.data.status);
           if (response.data.status === 0) {
-            this.data = this.data.filter(
+            this.articles = this.articles.filter(
               item => !this.checkedRowKeys.includes(item.id)
             );
             this.checkedRowKeys = [];
