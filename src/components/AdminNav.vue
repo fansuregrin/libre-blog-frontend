@@ -50,6 +50,18 @@ const menuOptions = [
     ]
   },
   {
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          name: 'Index'
+        }
+      },
+      { default: () => '首页' }
+    ),
+    key: 'index'
+  },
+  {
     label: '登出',
     key: 'logout'
   }

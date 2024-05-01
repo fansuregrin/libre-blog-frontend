@@ -19,10 +19,10 @@ const menuOptions = [
       RouterLink,
       {
         to: {
-          name: "BlogIndex",
+          name: "Index",
         }
       },
-      { default: () => '主页'}
+      { default: () => '首页'}
     ),
     key: 'index'
   },
