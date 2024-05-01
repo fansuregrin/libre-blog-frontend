@@ -8,11 +8,17 @@
       </n-dropdown>
       <n-data-table 
         :columns="columns"
-        :data="data"
-        :pagination="pagination"
+        :data="articles"
+        :pagination=false
         :rowKey="rowKey"
         :checkedRowKeys="checkedRowKeys"
         @update:checked-row-keys="handleCheck"
+      />
+      <n-pagination 
+        v-model:page="pagination.page" 
+        v-model:page-count="pagination.pageCount" 
+        :page-slot="5" 
+        @update:page="fetchData(pagination.page)"
       />
     </n-flex>
   </div>
@@ -20,7 +26,7 @@
 </template>
 
 <script>
-  import { NFlex, NDataTable, NDropdown, NButton } from 'naive-ui';
+  import { NFlex, NDataTable, NDropdown, NButton, NPagination } from 'naive-ui';
   import { createDiscreteApi } from 'naive-ui';
   import axios from 'axios';
   import '@/assets/main.css'
@@ -39,11 +45,11 @@
       },
       {
         title: '作者',
-        key: 'author',
+        key: 'author_name',
       },
       {
         title: '分类',
-        key: 'category'
+        key: 'category_name'
       },
       {
         title: '创建时间',
@@ -51,13 +57,6 @@
       }
     ];
   };
-
-  const data = Array.from({length: 30}).map((_, index) => ({
-    id: index,
-    title: `嘿嘿嘿 ${index}`,
-    author: '小华',
-    category: '随笔'
-  }));
 
   const options = [
     {
@@ -75,17 +74,42 @@
     components: {
       AdminNav, AdminFoot
     },
+    created() {
+      this.fetchData(1);
+    },
     data() {
       return {
-        data,
+        articles: [],
         columns: createColumns(),
-        pagination: {pageSize: 8},
+        pagination: {
+          pageCount: 1,
+          page: 1
+        },
         rowKey: (row) => row.id,
         checkedRowKeys: [],
         options
       };
     },
     methods: {
+      fetchData(page) {
+        console.log(`获取第${page}页...`)
+        this.page = Number(page);
+        axios.get(`/api/blog/page/${page}`)
+        .then(response => {
+          console.log("response status:", response.status);
+          if (response.data.status == 0) {
+            console.log('num_pages:', response.data.num_pages);
+            this.pagination.pageCount = response.data.num_pages;
+            this.articles = response.data.articles;
+          } else {
+            message.error('获取文章失败');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          message.error('获取文章失败');
+        });
+      },
       handleCheck(rowKeys) {
         this.checkedRowKeys = rowKeys;
       },
