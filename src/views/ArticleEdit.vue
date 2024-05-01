@@ -82,6 +82,8 @@ export default {
           message.error('登录失效，请重新登录');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
+        } else if (response.data.status === 4) {
+          message.error('您没有权限编辑');
         } else {
           message.error('更新失败');
         }

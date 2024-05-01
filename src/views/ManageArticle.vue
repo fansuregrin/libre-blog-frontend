@@ -29,12 +29,13 @@
   import { NFlex, NDataTable, NDropdown, NButton, NPagination } from 'naive-ui';
   import { createDiscreteApi } from 'naive-ui';
   import axios from 'axios';
+  import { h } from 'vue';
   import '@/assets/main.css'
   import AdminNav from '@/components/AdminNav.vue'
   import AdminFoot from '@/components/AdminFoot.vue';
 
   const { dialog, message } = createDiscreteApi(['dialog', 'message']);
-  const createColumns = () => {
+  const createColumns = ({edit}) => {
     return [
       {
         type: 'selection',
@@ -54,6 +55,22 @@
       {
         title: '创建时间',
         key: 'create_time'
+      },
+      {
+        title: '操作',
+        key: 'operations',
+        render(row) {
+          return h(
+            NButton,
+            {
+              strong: true,
+              tertiary: true,
+              size: "small",
+              onClick: () => edit(row)
+            },
+            { default: () => '编辑'}
+          );
+        }
       }
     ];
   };
@@ -63,10 +80,6 @@
       label: '删除',
       key: 'delete'
     },
-    {
-      label: '标记为私密',
-      key: 'private'
-    }
   ];
 
   export default {
@@ -80,7 +93,7 @@
     data() {
       return {
         articles: [],
-        columns: createColumns(),
+        columns: createColumns({edit: this.goToEdit}),
         pagination: {
           pageCount: 1,
           page: 1
@@ -161,6 +174,12 @@
         }).catch(error => {
           console.log(error.message);
           message.error('删除失败');
+        });
+      },
+      goToEdit(row) {
+        this.$router.push({
+          name: 'ArticleEdit', 
+          params: {id: row.id}
         });
       }
     }
