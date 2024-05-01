@@ -1,5 +1,5 @@
 <template>
-  <Header></Header>
+  <Nav></Nav>
   <div class="article-list">
     <n-card v-for="article in articles" class="article-item" :title="article.title" hoverable>
       <template #header-extra>
@@ -34,7 +34,8 @@ import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
 import { CalendarAlt, UserAlt } from '@vicons/fa'
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
-import Header from '@/components/Nav.vue';
+import Nav from '@/components/Nav.vue';
+import '@/assets/main.css';
 
 const { message } = createDiscreteApi(['message']);
 
@@ -42,7 +43,7 @@ export default defineComponent({
   name: 'ArticleList',
   components: {
     CalendarAlt, UserAlt,
-    Header
+    Nav
   },
   data() {
     return {

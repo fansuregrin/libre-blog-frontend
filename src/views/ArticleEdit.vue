@@ -31,7 +31,7 @@ import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 import AdminNav from '@/components/AdminNav.vue';
 import AdminFoot from '@/components/AdminFoot.vue';
-import '@/assets/main.css'
+import '@/assets/main.css';
 
 const { message } = createDiscreteApi(['message']);
 

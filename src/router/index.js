@@ -5,6 +5,7 @@ import ArticleList from '../views/ArticleList.vue'
 import Article from '../views/Article.vue'
 import ArticleEdit from '../views/ArticleEdit.vue'
 import ManageArticle from '../views/ManageArticle.vue'
+import Category from '@/views/Category.vue'
 
 
 const router = createRouter({
@@ -40,6 +41,11 @@ const router = createRouter({
       path: '/blog/page/:page',
       name: 'ArticleList',
       component: ArticleList
+    },
+    {
+      path: '/blog/category/:slug',
+      name: 'Category',
+      component: Category
     },
     {
       path: '/blog/article/:id',
