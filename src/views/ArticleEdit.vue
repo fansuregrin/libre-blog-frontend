@@ -8,7 +8,9 @@
           <n-input v-model:value="article.title"></n-input>
         </n-form-item>
         <n-form-item label="分类">
-          <n-select v-model:value="article.category" :options="categories"/>
+          <n-select v-model:value="article.category" :options="categories"
+            label-field="name" value-field="id"
+          />
         </n-form-item>
         <n-form-item label="摘要">
           <n-input type="textarea" autosize v-model:value="article.excerpt"></n-input>
