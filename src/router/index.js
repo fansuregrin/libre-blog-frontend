@@ -43,7 +43,7 @@ const router = createRouter({
       component: ArticleList
     },
     {
-      path: '/blog/category/:slug',
+      path: '/blog/category/:slug/:page?',
       name: 'Category',
       component: Category
     },
