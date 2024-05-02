@@ -12,6 +12,9 @@
             label-field="name" value-field="id"
           />
         </n-form-item>
+        <n-form-item label="标签">
+          <n-dynamic-tags v-model:value="article.tags" />
+        </n-form-item>
         <n-form-item label="摘要">
           <n-input type="textarea" autosize v-model:value="article.excerpt"></n-input>
         </n-form-item>
@@ -26,7 +29,7 @@
 </template>
 
 <script>
-import { NFlex, NInput, NForm, NFormItem, NSelect } from 'naive-ui';
+import { NFlex, NInput, NForm, NFormItem, NSelect, NDynamicTags } from 'naive-ui';
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 import AdminNav from '@/components/AdminNav.vue';
