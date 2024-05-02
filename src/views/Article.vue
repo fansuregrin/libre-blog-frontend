@@ -23,6 +23,7 @@
       <div v-html="render_content()"></div>
     </n-card>
   </div>
+  <foot />
 </template>
 
 <script>
@@ -34,6 +35,7 @@
   import hljs from 'highlight.js';
   import 'highlight.js/styles/github.css'
   import Nav from '@/components/Nav.vue';
+  import Foot from '@/components/Foot.vue';
 
   const { message } = createDiscreteApi(['message']);
 
@@ -41,7 +43,7 @@
     name: 'Article',
     components: {
       CalendarAlt, UserAlt, Hashtag, Edit,
-      Nav
+      Nav, Foot
     },
     data() {
       return {

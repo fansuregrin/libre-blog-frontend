@@ -26,6 +26,7 @@
     </n-card>
     <n-pagination v-model:page="page" v-model:page-count="num_pages" @update:page="goToPage" :page-slot="5"></n-pagination>
   </div>
+  <foot />
 </template>
 
 <script>
@@ -35,6 +36,7 @@ import { CalendarAlt, UserAlt } from '@vicons/fa'
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 import Nav from '@/components/Nav.vue';
+import Foot from '@/components/Foot.vue';
 import '@/assets/main.css';
 
 const { message } = createDiscreteApi(['message']);
@@ -43,7 +45,7 @@ export default defineComponent({
   name: 'ArticleList',
   components: {
     CalendarAlt, UserAlt,
-    Nav
+    Nav, Foot
   },
   data() {
     return {
