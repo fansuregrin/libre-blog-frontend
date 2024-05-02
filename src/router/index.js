@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import UserCenter from '../views/UserCenter.vue'
-import ArticleList from '../views/ArticleList.vue'
-import Article from '../views/Article.vue'
-import ArticleEdit from '../views/ArticleEdit.vue'
-import ManageArticle from '../views/ManageArticle.vue'
+import Login from '@/views/Login.vue'
+import UserCenter from '@/views/UserCenter.vue'
+import ArticleList from '@/views/ArticleList.vue'
+import Article from '@/views/Article.vue'
+import ArticleEdit from '@/views/ArticleEdit.vue'
+import ManageArticle from '@/views/ManageArticle.vue'
 import Category from '@/views/Category.vue'
 
 
