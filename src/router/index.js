@@ -38,7 +38,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/blog/page/:page',
+      path: '/blog/page/:page?',
       name: 'ArticleList',
       component: ArticleList
     },

@@ -48,18 +48,20 @@ export default defineComponent({
   data() {
     return {
       articles: [],
-      page: null,
-      num_pages: null
+      page: 1,
+      num_pages: 1
     }
   },
   methods: {
     goToPage(page) {
       this.$router.push(`/blog/page/${page}`);
     },
-    fetchData(page) {
-      console.log(`获取第${page}页...`)
-      this.page = Number(page);
-      axios.get(`/api/blog/page/${page}`)
+    fetchData(params) {
+      if (params.page) {
+        this.page = Number(params.page);
+      }
+      console.log(`获取第${this.page}页...`)
+      axios.get(`/api/blog/page/${this.page}`)
       .then(response => {
         console.log("response status:", response.status);
         if (response.data.status == 0) {
@@ -81,7 +83,7 @@ export default defineComponent({
   },
   created() {
     this.$watch(
-      () => this.$route.params.page,
+      () => this.$route.params,
       (newVal, oldVal) => { this.fetchData(newVal) },
       { immediate: true }
     );
