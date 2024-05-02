@@ -1,6 +1,6 @@
 <template>
   <Nav></Nav>
-  <div class="article-list">
+  <div class="container">
     <n-card v-for="article in articles" class="article-item" :title="article.title" hoverable>
       <template #header-extra>
         <n-button round size="small" @click="goToArticle(article.id)">阅读更多</n-button>
@@ -89,23 +89,3 @@ export default defineComponent({
 });
 
 </script>
-
-<style scoped>
-.article-list {
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
-}
-
-.article-item {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.article-meta-info {
-  margin-top: -15px;
-  margin-bottom: 20px;
-}
-</style>
