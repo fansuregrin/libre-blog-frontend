@@ -18,7 +18,7 @@ const menuOptions = [
       RouterLink,
       {
         to: {
-          name: "Index",
+          path: '/'
         }
       },
       { default: () => '首页'}

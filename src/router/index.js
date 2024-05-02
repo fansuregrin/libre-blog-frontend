@@ -12,14 +12,6 @@ const router = createRouter({
   history: createWebHistory('/'),
   routes: [
     {
-      path: '/',
-      name: 'Index',
-      redirect: {
-        name: 'ArticleList',
-        params: { page: 1 }
-      }
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
@@ -30,17 +22,10 @@ const router = createRouter({
       component: UserCenter
     },
     {
-      path: '/blog/',
-      name: 'BlogIndex',
-      redirect: {
-        name: 'ArticleList',
-        params: { page: 1 }
-      }
-    },
-    {
       path: '/blog/page/:page?',
       name: 'ArticleList',
-      component: ArticleList
+      component: ArticleList,
+      alias: ['/blog', '/']
     },
     {
       path: '/blog/category/:slug/:page?',
