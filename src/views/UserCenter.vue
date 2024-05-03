@@ -17,7 +17,7 @@
         <n-skeleton v-if="loading" height="100px" :sharp="false"/>
           <n-form v-else :model="userInfo" :rules="rules">
             <n-form-item label="用户ID">
-              <n-input-number :value="userInfo.id"></n-input-number>
+              <n-input-number :value="userInfo.id" :disabled=true></n-input-number>
             </n-form-item>
             <n-form-item label="用户名" path="username">
               <n-input v-model:value="userInfo.username"></n-input>
@@ -28,8 +28,11 @@
             <n-form-item label="真实名称" path="realname">
               <n-input v-model:value="userInfo.realname"></n-input>
             </n-form-item>
+            <n-form-item label="用户角色">
+              <n-input v-model:value="userInfo.role" :disabled=true />
+            </n-form-item>
             <n-form-item label="创建时间">
-              <n-input :value="userInfo.create_time"></n-input>
+              <n-input :value="userInfo.create_time" :disabled=true></n-input>
             </n-form-item>
           </n-form>
           <n-button secondary type="primary" @click="updateUserInfo">更新我的档案</n-button>
@@ -45,10 +48,6 @@
           </n-form-item>
         </n-form>
         <n-button secondary type="primary" @click="updatePassword">更新密码</n-button>
-      </n-card>
-      <n-card title="博客设置" hoverable>
-        <n-skeleton v-if="loading" height="100px" :sharp="false"/>
-        
       </n-card>
     </n-flex>
     <admin-foot></admin-foot>
