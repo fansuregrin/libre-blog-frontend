@@ -108,6 +108,10 @@
         console.log(`获取第${page}页...`)
         this.page = Number(page);
         const userToken = sessionStorage.getItem('userToken');
+        if (!userToken) {
+          this.$router.push({name: 'Login'});
+          return;
+        }
         axios.get(
           `/api/blog/admin/page/${page}`,
           {
