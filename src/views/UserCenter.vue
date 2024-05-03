@@ -165,8 +165,9 @@ export default {
     },
     updateUserInfo() {
       const userToken = sessionStorage.getItem('userToken');
-      if (userToken === '') {
+      if (!userToken) {
         this.$router.push({name: 'Login'});
+        return;
       }
       axios.post(
         '/api/user/update',
@@ -202,8 +203,9 @@ export default {
     },
     updatePassword() {
       const userToken = sessionStorage.getItem('userToken');
-      if (userToken === '') {
+      if (!userToken) {
         this.$router.push({name: 'Login'});
+        return;
       }
       if (this.passwdForm.newPassword != this.passwdForm.repeatPassword) {
         message.warning('两次密码不一致');
