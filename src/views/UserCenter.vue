@@ -181,14 +181,15 @@ export default {
           message.error('登录失效');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
-        } else if (response.data.status == 4) {
-          message.error(response.data.error);
         } else if (response.data.status == 5) {
-          message.error(response.data.error);
+          message.error('用户名不合法');
+        } else if (response.data.status == 6) {
+          message.error('电子邮箱不合法');
         } else {
           message.error('更新档案失败');
         }
       }).catch( error => {
+        console.log(error.message);
         message.error('更新档案失败');
       })
     },
@@ -219,11 +220,12 @@ export default {
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
         } else if (response.data.status == 4) {
-          message.error(response.data.error);
+          message.error('密码不合法');
         } else {
           message.error('更新密码失败');
         }
       }).catch( error => {
+        console.log(error.message);
         message.error('更新密码失败');
       })
     },

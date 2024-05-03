@@ -144,15 +144,17 @@
         .then(response => {
           console.log(response.data);
           
-          if(response.data.status == 0){
+          if (response.data.status === 0) {
             message.success("注册成功，请登录");
             this.selectedTab = "login";
-          }else if(response.data.status == 1){
-            message.warning(response.data.warning);
-          }else if(response.data.status == 2){
-            message.error(response.data.error);
-          }else{
-            message.error("注册过快，请10秒后注册");
+          } else if (response.data.status === 4) {
+            message.warning('密码不合法');
+          } else if (response.data.status === 5) {
+            message.error('用户名不合法');
+          } else if (response.data.status === 6) {
+            message.error('电子邮箱不合法');
+          } else {
+            message.error('注册失败');
           }
         })
         .catch(error => {
