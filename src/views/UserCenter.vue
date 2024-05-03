@@ -72,8 +72,8 @@ export default {
       userInfo: null,
       loading: true,
       passwdForm: {
-        newPassword: null,
-        repeatPassword: null
+        newPassword: '',
+        repeatPassword: ''
       },
       rules: {
         username: {
@@ -209,6 +209,10 @@ export default {
       }
       if (this.passwdForm.newPassword != this.passwdForm.repeatPassword) {
         message.warning('两次密码不一致');
+        return;
+      }
+      if (!this.passwdForm.newPassword || !this.passwdForm.newPassword.trim()) {
+        message.warning('密码不能为空');
         return;
       }
       axios.post(
