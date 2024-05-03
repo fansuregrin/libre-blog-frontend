@@ -125,8 +125,9 @@ export default {
   methods: {
     getUserInfo() {
       const userToken = sessionStorage.getItem('userToken');
-      if (userToken === '') {
-        this.$outer.push({name: 'Login'});
+      if (!userToken) {
+        this.$router.push({name: 'Login'});
+        return;
       }
       axios.get(
         '/api/user/center',
@@ -143,6 +144,7 @@ export default {
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
+          return;
         }  
         console.log('data:', response.data)
         if (response.data.status == 0) {
@@ -153,6 +155,7 @@ export default {
           console.log('获取用户信息失败');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
+          return;
         }
       })
       .catch (error => {
@@ -184,6 +187,7 @@ export default {
           message.error('登录失效');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
+          return;
         } else if (response.data.status == 5) {
           message.error('用户名不合法');
         } else if (response.data.status == 6) {
@@ -222,6 +226,7 @@ export default {
           message.error('登录失效');
           sessionStorage.removeItem('userToken');
           this.$router.push({name: 'Login'});
+          return;
         } else if (response.data.status == 4) {
           message.error('密码不合法');
         } else {
