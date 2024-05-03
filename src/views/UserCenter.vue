@@ -25,6 +25,9 @@
             <n-form-item label="电子邮箱" path="email">
               <n-input v-model:value="userInfo.email"></n-input>
             </n-form-item>
+            <n-form-item label="真实名称" path="realname">
+              <n-input v-model:value="userInfo.realname"></n-input>
+            </n-form-item>
             <n-form-item label="创建时间">
               <n-input :value="userInfo.create_time"></n-input>
             </n-form-item>
@@ -167,7 +170,8 @@ export default {
         '/api/user/update',
         {
           username: this.userInfo.username,
-          email: this.userInfo.email
+          email: this.userInfo.email,
+          realname: this.userInfo.realname
         },
         {
           headers: {
