@@ -107,8 +107,15 @@
       fetchData(page) {
         console.log(`获取第${page}页...`)
         this.page = Number(page);
-        axios.get(`/api/blog/page/${page}`)
-        .then(response => {
+        const userToken = sessionStorage.getItem('userToken');
+        axios.get(
+          `/api/blog/admin/page/${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
+          }
+        ).then(response => {
           console.log("response status:", response.status);
           if (response.data.status == 0) {
             console.log('num_pages:', response.data.num_pages);
