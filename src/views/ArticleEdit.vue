@@ -8,12 +8,12 @@
           <n-input v-model:value="article.title"></n-input>
         </n-form-item>
         <n-form-item label="分类">
-          <n-select v-model:value="article.category" :options="categories"
+          <n-select v-model:value="article.category.id" :options="categories"
             label-field="name" value-field="id"
           />
         </n-form-item>
         <n-form-item label="标签">
-          <n-dynamic-tags v-model:value="article.tags" />
+          <n-dynamic-tags v-model:value="tags" />
         </n-form-item>
         <n-form-item label="摘要">
           <n-input type="textarea" autosize v-model:value="article.excerpt"></n-input>
@@ -43,11 +43,12 @@ export default {
   data() {
     return {
       categories: [],
+      tags: [],
       article: null,
       textareSize: {
         minRows: 1,
         maxRows: 20
-      }
+      },
     };
   },
   components: {
@@ -80,6 +81,11 @@ export default {
         if (response.data.status == 0) {
           console.log('获取文章成功');
           this.article = response.data.article;
+          if (response.data.article.tags) {
+            for (const tag of response.data.article.tags) {
+              this.tags.push(tag.name);
+            }
+          }
         } else {
           message.error("获取文章失败");
         }
@@ -91,10 +97,17 @@ export default {
     },
     submitData() {
       const userToken = sessionStorage.getItem('userToken');
-      const id = this.$route.params.id;
       axios.post(
         '/api/blog/article/update',
-        this.article,
+        {
+          id: this.article.id,
+          title: this.article.title,
+          author: this.article.author.id,
+          category: this.article.category.id,
+          tags: this.tags,
+          except: this.article.except,
+          cotent: this.article.content
+        },
         {
           headers: {
             Authorization: `Bearer ${userToken}`

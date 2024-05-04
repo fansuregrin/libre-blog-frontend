@@ -2,11 +2,11 @@
   <Nav></Nav>
   <div class="container">
     <n-card v-if="article" :title="article.title" class="article">
-      <n-flex class="article-meta-info">
+      <n-flex class="article-meta-info" :inline=true>
         <span>
           <n-icon class="icon"><user-alt /></n-icon>
-          <router-link :to="'/blog/author/'+article.author" class="hyperlink">
-            {{ article.author_name }}
+          <router-link :to="'/blog/author/'+article.author.id" class="hyperlink">
+            {{ article.author.realname }}
           </router-link>
         </span>
         <span>
@@ -15,9 +15,17 @@
         </span>
         <span>
           <n-icon class="icon"><hashtag /></n-icon>
-          <router-link :to="'/blog/category/'+article.category" class="hyperlink">
-            {{ article.category_name }}
+          <router-link :to="'/blog/category/'+article.category.slug" class="hyperlink">
+            {{ article.category.name }}
           </router-link>
+        </span>
+        <span v-if="article.tags">
+          <n-icon class="icon"><tags /></n-icon>
+          <n-flex :inline=true>
+            <router-link v-for="tag in article.tags" :to="''" class="hyperlink">
+              {{ tag.name }}
+            </router-link>
+          </n-flex>
         </span>
         <span v-if="article.editable">
           <n-icon class="icon"><edit/></n-icon>
@@ -34,7 +42,7 @@
 
 <script>
   import { NCard, NFlex, createDiscreteApi } from 'naive-ui';
-  import { CalendarAlt, UserAlt, Hashtag, Edit } from '@vicons/fa';
+  import { CalendarAlt, UserAlt, Hashtag, Edit, Tags } from '@vicons/fa';
   import axios from 'axios';
   import { marked } from 'marked';
   import DOMPurify from 'dompurify';
@@ -48,7 +56,7 @@
   export default {
     name: 'Article',
     components: {
-      CalendarAlt, UserAlt, Hashtag, Edit,
+      CalendarAlt, UserAlt, Hashtag, Edit, Tags,
       Nav, Foot
     },
     data() {
