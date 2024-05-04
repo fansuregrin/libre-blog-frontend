@@ -15,7 +15,9 @@
         </span>
         <span>
           <n-icon class="icon"><hashtag /></n-icon>
-          <span>{{ article.category_name }}</span>
+          <router-link :to="'/blog/category/'+article.category" class="hyperlink">
+            {{ article.category_name }}
+          </router-link>
         </span>
         <span v-if="article.editable">
           <n-icon class="icon"><edit/></n-icon>
