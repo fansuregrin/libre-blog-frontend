@@ -42,7 +42,11 @@
       },
       {
         title: '标题',
-        key: 'title'
+        key: 'title',
+        maxWidth: 600,
+        ellipsis: {
+          tooltip: true
+        }
       },
       {
         title: '作者',
