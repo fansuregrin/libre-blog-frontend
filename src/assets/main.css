@@ -22,4 +22,14 @@ h3 {
 .article-meta-info {
   margin-top: -15px;
   margin-bottom: 20px;
+  color: darkgray;
+}
+
+.icon {
+  padding: 0 5px;
+}
+
+.hyperlink {
+  text-decoration: none;
+  color: inherit;
 }
