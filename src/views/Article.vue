@@ -4,20 +4,24 @@
     <n-card v-if="article" :title="article.title" class="article">
       <n-flex class="article-meta-info">
         <span>
-          <n-icon><user-alt /></n-icon>
-          {{ article.author_name }}
+          <n-icon class="icon"><user-alt /></n-icon>
+          <router-link :to="'/blog/author/'+article.author" class="hyperlink">
+            {{ article.author_name }}
+          </router-link>
         </span>
         <span>
-          <n-icon><calendar-alt /></n-icon>
-          {{ article.create_time }}
+          <n-icon class="icon"><calendar-alt /></n-icon>
+          <span>{{ article.create_time }}</span>
         </span>
         <span>
-          <n-icon><hashtag /></n-icon>
-          {{ article.category_name }}
+          <n-icon class="icon"><hashtag /></n-icon>
+          <span>{{ article.category_name }}</span>
         </span>
         <span v-if="article.editable">
-          <n-icon><edit/></n-icon>
-          <a :href="editLink">修改</a>
+          <n-icon class="icon"><edit/></n-icon>
+          <router-link :to="'/admin/edit-article/'+article.id" class="hyperlink">
+            修改
+          </router-link>
         </span>
       </n-flex>
       <div v-html="render_content()"></div>
@@ -48,7 +52,6 @@
     data() {
       return {
         article: null,
-        editLink: null,
       }
     },
     created() {
@@ -83,7 +86,6 @@
           console.log("response status:", response.status);
           if (response.data.status == 0) {
             this.article = response.data.article;
-            this.editLink = '/admin/edit-article/' + this.article.id;
           } else {
             console.log(response.data.status);
             message.error("获取文章失败");
