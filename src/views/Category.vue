@@ -8,12 +8,14 @@
       </template>
       <n-flex class="article-meta-info">
         <span>
-          <n-icon><user-alt /></n-icon>
-          {{ article.author_name }}
+          <n-icon class="icon"><user-alt /></n-icon>
+          <router-link :to="'/blog/author/'+article.author" class="hyperlink">
+            {{ article.author_name }}
+          </router-link>
         </span>
         <span>
-          <n-icon><calendar-alt /></n-icon>
-          {{ article.create_time }}
+          <n-icon class="icon"><calendar-alt /></n-icon>
+          <span>{{ article.create_time }}</span>
         </span>
       </n-flex>
       {{ article.excerpt }}

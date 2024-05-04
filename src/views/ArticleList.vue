@@ -6,13 +6,15 @@
         <n-button round size="small" @click="goToArticle(article.id)">阅读更多</n-button>
       </template>
       <n-flex class="article-meta-info">
-        <span>
-          <n-icon><user-alt /></n-icon>
-          {{ article.author_name }}
+        <span >
+          <n-icon class="icon"><user-alt /></n-icon>
+          <router-link :to="'/blog/author/'+article.author" class="hyperlink">
+            {{ article.author_name }}
+          </router-link>
         </span>
         <span>
-          <n-icon><calendar-alt /></n-icon>
-          {{ article.create_time }}
+          <n-icon class="icon"><calendar-alt /></n-icon>
+          <span>{{ article.create_time }}</span>
         </span>
       </n-flex>
       {{ article.excerpt }}
@@ -51,7 +53,7 @@ export default defineComponent({
     return {
       articles: [],
       page: 1,
-      num_pages: 1
+      num_pages: 1,
     }
   },
   methods: {
