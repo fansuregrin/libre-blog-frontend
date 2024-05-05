@@ -8,20 +8,25 @@
       <n-flex class="article-meta-info">
         <span >
           <n-icon class="icon"><user-alt /></n-icon>
-          <router-link :to="'/blog/author/'+article.author" class="hyperlink">
-            {{ article.author_name }}
+          <router-link :to="'/blog/author/'+article.author.id" class="hyperlink">
+            {{ article.author.realname }}
           </router-link>
         </span>
         <span>
           <n-icon class="icon"><calendar-alt /></n-icon>
-          <span>{{ article.create_time }}</span>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <span>{{ formatDate(article.create_time) }}</span>
+            </template>
+            {{ formatDateTime(article.create_time) }}
+          </n-tooltip>
         </span>
       </n-flex>
       {{ article.excerpt }}
       <template #footer>
         <n-flex>
           <n-tag v-for="tag in article.tags" :bordered="false" type="info" size="small" round>
-            {{ tag }}
+            {{ tag.name }}
           </n-tag>
         </n-flex>
       </template>
@@ -33,7 +38,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
+import { NCard, NButton, NIcon, NFlex, NPagination, NTooltip } from 'naive-ui'
 import { CalendarAlt, UserAlt } from '@vicons/fa'
 import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
@@ -59,6 +64,14 @@ export default defineComponent({
   methods: {
     goToPage(page) {
       this.$router.push(`/blog/page/${page}`);
+    },
+    formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString(this.$i18n.locale);
+    },
+    formatDateTime(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString(this.$i18n.locale);
     },
     fetchData(params) {
       if (params.page) {

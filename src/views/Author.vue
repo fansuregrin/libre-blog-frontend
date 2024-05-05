@@ -1,7 +1,7 @@
 <template>
     <Nav></Nav>
     <div class="container">
-      <h2>{{ authorName }} 发布的文章</h2>
+      <h2>{{ author.realname }} 发布的文章</h2>
       <n-card v-for="article in articles" class="article-item" :title="article.title" hoverable>
         <template #header-extra>
           <n-button round size="small" @click="goToArticle(article.id)">阅读更多</n-button>
@@ -9,20 +9,25 @@
         <n-flex class="article-meta-info">
           <span>
             <n-icon class="icon"><user-alt /></n-icon>
-            <router-link :to="'/blog/author/'+article.author" class="hyperlink">
-              {{ article.author_name }}
+            <router-link :to="'/blog/author/'+author.id" class="hyperlink">
+              {{ author.realname }}
             </router-link>
           </span>
           <span>
             <n-icon class="icon"><calendar-alt /></n-icon>
-            <span>{{ article.create_time }}</span>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <span>{{ formatDate(article.create_time) }}</span>
+              </template>
+              {{ formatDateTime(article.create_time) }}
+            </n-tooltip>
           </span>
         </n-flex>
         {{ article.excerpt }}
         <template #footer>
           <n-flex>
             <n-tag v-for="tag in article.tags" :bordered="false" type="info" size="small" round>
-              {{ tag }}
+              {{ tag.name }}
             </n-tag>
           </n-flex>
         </template>
@@ -50,7 +55,7 @@
     },
     data() {
       return {
-        authorName: '',
+        author: {},
         articles: [],
         num_pages: 1,
         page: 1
@@ -71,6 +76,14 @@
         const id = this.$route.params.id;
         this.$router.push(`/blog/author/${id}/${page}`);
       },
+      formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString(this.$i18n.locale);
+      },
+      formatDateTime(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleString(this.$i18n.locale);
+      },
       fetchData(params) {
         if (params.page) {
           this.page = Number(params.page);
@@ -78,7 +91,7 @@
         axios.get(`/api/blog/user/${params.id}/${this.page}`)
         .then(response => {
           if (response.data.status === 0) {
-            this.authorName = response.data.name;
+            this.author = response.data.author;
             this.num_pages = response.data.num_pages;
             this.articles = response.data.articles;
           } else {
