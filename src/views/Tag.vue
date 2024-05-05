@@ -88,7 +88,8 @@
         if (params.page) {
           this.page = Number(params.page);
         }
-        axios.get(`/api/blog/tag/${params.slug}/${this.page}`)
+        const slug = encodeURIComponent(params.slug);
+        axios.get(`/api/blog/tag/${slug}/${this.page}`)
         .then(response => {
           if (response.data.status === 0) {
             this.tag = response.data.tag;

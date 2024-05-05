@@ -88,7 +88,8 @@
         if (params.page) {
           this.page = Number(params.page);
         }
-        axios.get(`/api/blog/category/${params.slug}/${this.page}`)
+        const slug = encodeURIComponent(params.slug);
+        axios.get(`/api/blog/category/${slug}/${this.page}`)
         .then(response => {
           if (response.data.status === 0) {
             this.category = response.data.category;
