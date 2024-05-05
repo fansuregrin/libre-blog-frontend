@@ -7,6 +7,7 @@ import ArticleEdit from '@/views/ArticleEdit.vue'
 import ManageArticle from '@/views/ManageArticle.vue'
 import Category from '@/views/Category.vue'
 import Author from '@/views/Author.vue'
+import Tag from '@/views/Tag.vue'
 
 
 const router = createRouter({
@@ -37,6 +38,11 @@ const router = createRouter({
       path: '/blog/author/:id/:page?',
       name: 'Author',
       component: Author
+    },
+    {
+      path: '/blog/tag/:slug/:page?',
+      name: 'Tag',
+      component: Tag
     },
     {
       path: '/blog/article/:id',

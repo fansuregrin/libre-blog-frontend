@@ -22,7 +22,7 @@
         <span v-if="article.tags">
           <n-icon class="icon"><tags /></n-icon>
           <n-flex :inline=true>
-            <router-link v-for="tag in article.tags" :to="''" class="hyperlink">
+            <router-link v-for="tag in article.tags" :to="'/blog/tag/'+tag.slug" class="hyperlink">
               {{ tag.name }}
             </router-link>
           </n-flex>
