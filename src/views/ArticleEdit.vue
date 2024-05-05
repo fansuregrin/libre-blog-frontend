@@ -106,7 +106,7 @@ export default {
           category: this.article.category.id,
           tags: this.tags,
           except: this.article.except,
-          cotent: this.article.content
+          content: this.article.content
         },
         {
           headers: {

@@ -11,7 +11,12 @@
         </span>
         <span>
           <n-icon class="icon"><calendar-alt /></n-icon>
-          <span>{{ article.create_time }}</span>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <span>{{ formatDate(article.create_time) }}</span>
+            </template>
+            {{ formatDateTime(article.create_time) }}
+          </n-tooltip>
         </span>
         <span>
           <n-icon class="icon"><hashtag /></n-icon>
@@ -77,6 +82,14 @@
       );
     },
     methods: {
+      formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString(this.$i18n.locale);
+      },
+      formatDateTime(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleString(this.$i18n.locale);
+      },
       fetchData() {
         this.error = this.article = null
         this.loading = true
