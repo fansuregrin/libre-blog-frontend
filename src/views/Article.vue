@@ -32,7 +32,7 @@
             </router-link>
           </n-flex>
         </span>
-        <span v-if="article.editable">
+        <span v-if="editable">
           <n-icon class="icon"><edit/></n-icon>
           <router-link :to="'/admin/edit-article/'+article.id" class="hyperlink">
             修改
@@ -67,6 +67,7 @@
     data() {
       return {
         article: null,
+        editable: false
       }
     },
     created() {
@@ -96,14 +97,8 @@
         const id = this.$route.params.id;
         console.log(`获取id为${id}的文章...`);
         
-        const userToken = sessionStorage.getItem('userToken');
         axios.get(
-          '/api/blog/article/'+id,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`
-            }
-          }
+          '/api/blog/article/'+id
         )
         .then(response => {
           console.log("response status:", response.status);
