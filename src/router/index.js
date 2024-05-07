@@ -10,6 +10,7 @@ import Category from '@/views/Category.vue'
 import Author from '@/views/Author.vue'
 import Tag from '@/views/Tag.vue'
 import CategoryEdit from '@/views/CategoryEdit.vue'
+import ArticleAdd from '@/views/ArticleAdd.vue'
 
 
 const router = createRouter({
@@ -68,6 +69,14 @@ const router = createRouter({
       component: ManageArticle,
       meta: {
         title: '管理文章 - Libre Blog'
+      }
+    },
+    {
+      path: '/admin/add-article',
+      name: 'ArticleAdd',
+      component: ArticleAdd,
+      meta: {
+        title: '添加新文章 - Libre Blog'
       }
     },
     {

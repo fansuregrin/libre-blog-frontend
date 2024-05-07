@@ -1,7 +1,9 @@
 <template>
   <admin-nav></admin-nav>
   <div class="container">
-    <h2>管理文章</h2>
+    <h2>管理文章
+      <n-button text :bordered=false class="new-item" @click="goToAdd">新增</n-button>
+    </h2>
     <n-flex>
       <n-dropdown trigger="click" :options="options" @select="handleSelect">
         <n-button size="small">选中项</n-button>
@@ -195,6 +197,11 @@
         this.$router.push({
           name: 'ArticleEdit', 
           params: {id: row.id}
+        });
+      },
+      goToAdd() {
+        this.$router.push({
+          name: 'ArticleAdd'
         });
       }
     }
