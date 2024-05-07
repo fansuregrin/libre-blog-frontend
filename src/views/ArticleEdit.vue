@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     getCategories() {
-      axios.get('/api/blog/category')
+      axios.get('/api/blog/categories')
       .then(response => {
         if (response.data.status === 0) {
           this.categories = response.data.categories;
