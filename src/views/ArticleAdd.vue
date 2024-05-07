@@ -80,6 +80,14 @@
         });
       },
       submitData() {
+        if (this.article?.title.trim() === '') {
+          message.warning('标题不能为空');
+          return;
+        }
+        if (!this.article?.category) {
+          message.warning('请选择一个分类');
+          return;
+        }
         const userToken = sessionStorage.getItem('userToken');
         axios.post(
           '/api/blog/article/add',
