@@ -126,7 +126,6 @@
             }
           }
         ).then(response => {
-          console.log("response status:", response.status);
           if (response.data.status == 0) {
             console.log('num_pages:', response.data.num_pages);
             this.pagination.pageCount = response.data.num_pages;
@@ -176,9 +175,7 @@
         ).then(response => {
           console.log('data.status:', response.data.status);
           if (response.data.status === 0) {
-            this.articles = this.articles.filter(
-              item => !this.checkedRowKeys.includes(item.id)
-            );
+            this.fetchData(this.page);
             this.checkedRowKeys = [];
             message.success('删除成功');
           } else if (response.data.status === 3) {

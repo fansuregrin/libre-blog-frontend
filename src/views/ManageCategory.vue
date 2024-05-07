@@ -111,14 +111,39 @@
         });
       },
       deleteCategories() {
-
+        const userToken = sessionStorage.getItem('userToken');
+        axios.post(
+          '/api/blog/category/delete',
+          {
+            ids: this.checkedRowKeys
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
+          }
+        ).then(response => {
+          if (response.data.status === 0) {
+            this.fetchData();
+            this.checkedRowKeys = [];
+            message.success('删除成功');
+          } else if (response.data.status === 3) {
+            sessionStorage.removeItem('userToken');
+            message.error('登录失效，请重新登录');
+            this.$router.push({name: 'Login'});
+          } else {
+            message.error('删除失败');
+          }
+        }).catch(error => {
+          console.log(error.message);
+          message.error('删除失败');
+        });
       },
       handleCheck(rowKeys) {
         this.checkedRowKeys = rowKeys;
       },
       handleSelect(key) {
         if (key === 'delete') {
-          console.log('deleting...');
           dialog.warning({
             title: '警告',
             content: '您确定删除这些分类吗？',
