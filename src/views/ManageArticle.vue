@@ -119,7 +119,7 @@
           return;
         }
         axios.get(
-          `/api/blog/admin/page/${page}`,
+          `/api/blog/admin/articles/${page}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`
@@ -144,7 +144,6 @@
       },
       handleSelect(key) {
         if (key === 'delete') {
-          console.log('deleting...');
           dialog.warning({
             title: '警告',
             content: '您确定删除这些文章吗？',
@@ -173,7 +172,6 @@
             }
           }
         ).then(response => {
-          console.log('data.status:', response.data.status);
           if (response.data.status === 0) {
             this.fetchData(this.page);
             this.checkedRowKeys = [];

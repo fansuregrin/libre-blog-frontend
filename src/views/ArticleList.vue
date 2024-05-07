@@ -81,9 +81,8 @@ export default defineComponent({
         this.page = Number(params.page);
       }
       console.log(`获取第${this.page}页...`)
-      axios.get(`/api/blog/page/${this.page}`)
+      axios.get(`/api/blog/articles/${this.page}`)
       .then(response => {
-        console.log("response status:", response.status);
         if (response.data.status == 0) {
           console.log('num_pages:', response.data.num_pages);
           this.num_pages = response.data.num_pages;
