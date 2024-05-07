@@ -116,7 +116,7 @@ export default {
       ).then(response => {
         if (response.data.status === 0) {
           message.info('更新成功');
-          this.$router.push('/admin/manage-articles');
+          this.$router.push({name: 'ManageArticle'});
         } else if (response.data.status === 3) {
           message.error('登录失效，请重新登录');
           sessionStorage.removeItem('userToken');
@@ -144,15 +144,5 @@ export default {
 </script>
 
 <style scoped>
-.edit-area {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-.edit-form {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
 </style>

@@ -60,6 +60,10 @@ export default {
       ).then(response => {
         if (response.data.status === 0) {
           this.menuOptions = response.data.menu;
+        } else if (response.data.status === 3) {
+          message.error('登录失效，请重新登录');
+          sessionStorage.removeItem('userToken');
+          this.$router.push({name: 'Login'});
         }
       }).catch(error => {
         console.log(error.message);

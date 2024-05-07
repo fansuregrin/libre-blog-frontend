@@ -5,9 +5,11 @@ import ArticleList from '@/views/ArticleList.vue'
 import Article from '@/views/Article.vue'
 import ArticleEdit from '@/views/ArticleEdit.vue'
 import ManageArticle from '@/views/ManageArticle.vue'
+import ManageCategory from '@/views/ManageCategory.vue'
 import Category from '@/views/Category.vue'
 import Author from '@/views/Author.vue'
 import Tag from '@/views/Tag.vue'
+import CategoryEdit from '@/views/CategoryEdit.vue'
 
 
 const router = createRouter({
@@ -58,6 +60,16 @@ const router = createRouter({
       path: '/admin/manage-articles',
       name: 'ManageArticle',
       component: ManageArticle
+    },
+    {
+      path: '/admin/manage-categories',
+      name: 'ManageCategory',
+      component: ManageCategory
+    },
+    {
+      path: '/admin/edit-category/:id',
+      name: 'CategoryEdit',
+      component: CategoryEdit
     }
     // {
     //   path: '/about',
