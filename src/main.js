@@ -5,7 +5,7 @@ import naive from 'naive-ui'
 import router from './router'
 
 const i18n = createI18n();
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(router)
 app.use(naive)

@@ -71,14 +71,11 @@
       }
     },
     created() {
-      // watch 路由的参数，以便再次获取数据
       this.$watch(
         () => this.$route.params,
-        () => {
+        (newVal, oldVal) => {
           this.fetchData();
         },
-        // 组件创建完后获取数据，
-        // 此时 data 已经被 observed 了
         { immediate: true }
       );
     },
@@ -104,6 +101,7 @@
           console.log("response status:", response.status);
           if (response.data.status == 0) {
             this.article = response.data.article;
+            document.title = `${this.article?.title} - Libre Blog`;
           } else {
             console.log(response.data.status);
             message.error("获取文章失败");

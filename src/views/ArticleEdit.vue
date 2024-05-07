@@ -81,6 +81,7 @@ export default {
         if (response.data.status == 0) {
           console.log('获取文章成功');
           this.article = response.data.article;
+          document.title = `编辑 ${this.article?.title} - Libre Blog`;
           if (response.data.article.tags) {
             for (const tag of response.data.article.tags) {
               this.tags.push(tag.name);

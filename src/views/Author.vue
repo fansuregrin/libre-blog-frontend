@@ -94,6 +94,7 @@
             this.author = response.data.author;
             this.num_pages = response.data.num_pages;
             this.articles = response.data.articles;
+            document.title = `${this.author?.realname} 发布的文章 - Libre Blog`;
           } else {
             message.error('获取文章列表失败');
           }

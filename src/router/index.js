@@ -18,12 +18,18 @@ const router = createRouter({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        title: '登录 - Libre Blog'
+      }
     },
     {
       path: '/admin/user-center',
       name: 'UserCenter',
-      component: UserCenter
+      component: UserCenter,
+      meta: {
+        title: '用户中心 - Libre Blog'
+      }
     },
     {
       path: '/blog/page/:page?',
@@ -44,12 +50,12 @@ const router = createRouter({
     {
       path: '/blog/tag/:slug/:page?',
       name: 'Tag',
-      component: Tag
+      component: Tag,
     },
     {
       path: '/blog/article/:id',
       name: 'Article',
-      component: Article
+      component: Article,
     },
     {
       path: '/admin/edit-article/:id',
@@ -59,12 +65,18 @@ const router = createRouter({
     {
       path: '/admin/manage-articles',
       name: 'ManageArticle',
-      component: ManageArticle
+      component: ManageArticle,
+      meta: {
+        title: '管理文章 - Libre Blog'
+      }
     },
     {
       path: '/admin/manage-categories',
       name: 'ManageCategory',
-      component: ManageCategory
+      component: ManageCategory,
+      meta: {
+        title: '管理分类 - Libre Blog'
+      }
     },
     {
       path: '/admin/edit-category/:id',
@@ -82,4 +94,12 @@ const router = createRouter({
   ]
 })
 
-export default router
+router.beforeEach((to, from) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  } else {
+    document.title = 'Libre Blog';
+  }
+});
+
+export default router;

@@ -51,6 +51,7 @@ export default {
       .then(response => {
         if (response.data.status === 0) {
           this.category = response.data.category;
+          document.title = `编辑分类 ${this.category?.name} - Libre Blog`;
         } else {
           message.error('获取分类信息失败');
         }

@@ -95,6 +95,7 @@
             this.category = response.data.category;
             this.numPages = response.data.num_pages;
             this.articles = response.data.articles;
+            document.title = `分类 ${this.category?.name} 下的文章 - Libre Blog`;
           } else {
             message.error('获取文章列表失败');
           }

@@ -95,6 +95,7 @@
             this.tag = response.data.tag;
             this.numPages = response.data.num_pages;
             this.articles = response.data.articles;
+            document.title = `标签 ${this.tag?.name} 下的文章 - Libre Blog`;
           } else {
             message.error('获取文章列表失败');
           }

@@ -63,7 +63,10 @@ export default defineComponent({
   },
   methods: {
     goToPage(page) {
-      this.$router.push(`/blog/page/${page}`);
+      this.$router.push({
+        name: 'ArticleList',
+        params: { page: page }
+      });
     },
     formatDate(dateStr) {
       const date = new Date(dateStr);
@@ -101,7 +104,12 @@ export default defineComponent({
   created() {
     this.$watch(
       () => this.$route.params,
-      (newVal, oldVal) => { this.fetchData(newVal) },
+      (newVal, oldVal) => {
+        if (newVal.page) {
+          document.title = `第${newVal.page}页 - LibreBlog`;
+        }
+        this.fetchData(newVal);
+      },
       { immediate: true }
     );
   }
