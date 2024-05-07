@@ -5,21 +5,25 @@
     <n-flex v-if="article" class="edit-area">
       <n-form size="large" class="edit-form">
         <n-form-item label="标题">
-          <n-input v-model:value="article.title"></n-input>
+          <n-input v-model:value="article.title" placeholder="请输入标题" />
         </n-form-item>
         <n-form-item label="分类">
           <n-select v-model:value="article.category.id" :options="categories"
-            label-field="name" value-field="id"
+            label-field="name" value-field="id" placeholder="请选择分类"
           />
         </n-form-item>
         <n-form-item label="标签">
           <n-dynamic-tags v-model:value="tags" />
         </n-form-item>
         <n-form-item label="摘要">
-          <n-input type="textarea" autosize v-model:value="article.excerpt"></n-input>
+          <n-input type="textarea" autosize v-model:value="article.excerpt" 
+            placeholder="请输入摘要"
+          />
         </n-form-item>
         <n-form-item label="内容">
-          <n-input type="textarea" :autosize="textareSize" v-model:value="article.content"></n-input>
+          <n-input type="textarea" :autosize="textareSize" 
+            v-model:value="article.content" placeholder="请输入内容"
+          />
         </n-form-item>
       </n-form>
       <n-button @click="submitData">提交</n-button>

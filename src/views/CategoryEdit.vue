@@ -5,10 +5,10 @@
     <n-flex v-if="category" class="edit-area">
       <n-form size="large" class="edit-form">
         <n-form-item label="分类名称">
-          <n-input v-model:value="category.name" />
+          <n-input v-model:value="category.name" placeholder="请输入分类的名称" />
         </n-form-item>
         <n-form-item label="分类缩略名">
-          <n-input v-model:value="category.slug" />
+          <n-input v-model:value="category.slug" placeholder="请输入分类的缩略名" />
         </n-form-item>
       </n-form>
       <n-button @click="submitData">提交</n-button>
