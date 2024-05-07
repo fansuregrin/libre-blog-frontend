@@ -5,12 +5,12 @@
     <n-flex>
       <n-skeleton v-if="loading" height="40px" :sharp="false" />
       <n-flex v-else>
-        <n-avatar
+        <!-- <n-avatar
           lazy
           size="large"
           src="https://picsum.photos/id/10/100/100"
           fallback-src="https://picsum.photos/id/10/100/100"
-        />
+        /> -->
         <h3 class="h3">{{ userInfo.realname }}</h3>
       </n-flex>
       <n-card title="个人资料" hoverable>
