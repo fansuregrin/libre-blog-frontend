@@ -11,6 +11,7 @@ import Author from '@/views/Author.vue'
 import Tag from '@/views/Tag.vue'
 import CategoryEdit from '@/views/CategoryEdit.vue'
 import ArticleAdd from '@/views/ArticleAdd.vue'
+import CategoryAdd from '@/views/CategoryAdd.vue'
 
 
 const router = createRouter({
@@ -91,6 +92,14 @@ const router = createRouter({
       path: '/admin/edit-category/:id',
       name: 'CategoryEdit',
       component: CategoryEdit
+    },
+    {
+      path: '/admin/add-category',
+      name: 'CategoryAdd',
+      component: CategoryAdd,
+      meta: {
+        title: '添加新分类 - Libre Blog'
+      }
     }
     // {
     //   path: '/about',

@@ -1,7 +1,9 @@
 <template>
   <admin-nav></admin-nav>
   <div class="container">
-    <h2>管理分类</h2>
+    <h2>管理分类
+      <n-button text @click="goToAdd" class="new-item">新增</n-button>
+    </h2>
     <n-flex>
       <n-dropdown trigger="click" :options="options" @select="handleSelect">
         <n-button size="small">选中项</n-button>
@@ -101,6 +103,11 @@
         this.$router.push({
           name: 'CategoryEdit', 
           params: {id: row.id}
+        });
+      },
+      goToAdd() {
+        this.$router.push({
+          name: 'CategoryAdd',
         });
       },
       deleteCategories() {
