@@ -49,7 +49,7 @@
   const { message } = createDiscreteApi(['message']);
 
   export default {
-    name: 'Tag',
+    name: 'ArticleListByTag',
     components: {
       Nav, Foot, CalendarAlt, UserAlt
     },

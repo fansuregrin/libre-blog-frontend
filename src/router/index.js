@@ -6,9 +6,9 @@ import Article from '@/views/Article.vue'
 import ArticleEdit from '@/views/ArticleEdit.vue'
 import ManageArticle from '@/views/ManageArticle.vue'
 import ManageCategory from '@/views/ManageCategory.vue'
-import Category from '@/views/Category.vue'
-import Author from '@/views/Author.vue'
-import Tag from '@/views/Tag.vue'
+import ArticleListByCategory from '@/views/ArticleListByCategory.vue'
+import ArticleListByAuthor from '@/views/ArticleListByAuthor.vue'
+import ArticleListByTag from '@/views/ArticleListByTag.vue'
 import CategoryEdit from '@/views/CategoryEdit.vue'
 import ArticleAdd from '@/views/ArticleAdd.vue'
 import CategoryAdd from '@/views/CategoryAdd.vue'
@@ -44,18 +44,18 @@ const router = createRouter({
     },
     {
       path: '/blog/category/:slug/:page?',
-      name: 'Category',
-      component: Category
+      name: 'ArticleListByCategory',
+      component: ArticleListByCategory
     },
     {
       path: '/blog/author/:id/:page?',
-      name: 'Author',
-      component: Author
+      name: 'ArticleListByAuthor',
+      component: ArticleListByAuthor
     },
     {
       path: '/blog/tag/:slug/:page?',
-      name: 'Tag',
-      component: Tag,
+      name: 'ArticleListByTag',
+      component: ArticleListByTag
     },
     {
       path: '/blog/article/:id',

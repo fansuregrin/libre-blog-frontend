@@ -66,7 +66,7 @@ export default {
               RouterLink,
               {
                 to: {
-                  name: 'Category',
+                  name: 'ArticleListByCategory',
                   params: {slug: cat.slug}
                 }
               },

@@ -49,7 +49,7 @@
   const { message } = createDiscreteApi(['message']);
 
   export default {
-    name: 'Author',
+    name: 'ArticleListByAuthor',
     components: {
       Nav, Foot, CalendarAlt, UserAlt
     },
