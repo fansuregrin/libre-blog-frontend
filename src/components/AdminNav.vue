@@ -41,7 +41,7 @@ export default {
       } else if (key === 'user') {
 
       } else if (key === 'tag') {
-
+        this.$router.push({name: 'ManageTag'});
       }
     },
     genMenuOptions() {

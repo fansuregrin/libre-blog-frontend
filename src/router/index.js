@@ -12,6 +12,9 @@ import Tag from '@/views/Tag.vue'
 import CategoryEdit from '@/views/CategoryEdit.vue'
 import ArticleAdd from '@/views/ArticleAdd.vue'
 import CategoryAdd from '@/views/CategoryAdd.vue'
+import ManageTag from '@/views/ManageTag.vue'
+import TagEdit from '@/views/TagEdit.vue'
+import TagAdd from '@/views/TagAdd.vue'
 
 
 const router = createRouter({
@@ -100,7 +103,28 @@ const router = createRouter({
       meta: {
         title: '添加新分类 - Libre Blog'
       }
-    }
+    },
+    {
+      path: '/admin/manage-tags',
+      name: 'ManageTag',
+      component: ManageTag,
+      meta: {
+        title: '管理标签 - Libre Blog'
+      }
+    },
+    {
+      path: '/admin/edit-tag/:id',
+      name: 'TagEdit',
+      component: TagEdit
+    },
+    {
+      path: '/admin/add-tag',
+      name: 'TagAdd',
+      component: TagAdd,
+      meta: {
+        title: '添加新标签 - Libre Blog'
+      }
+    },
     // {
     //   path: '/about',
     //   name: 'about',
