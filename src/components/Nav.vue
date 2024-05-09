@@ -1,61 +1,35 @@
 <template>
-  <n-menu :options="menuOptions" mode="horizontal" responsive />
+  <n-menu 
+    :options="menuOptions" mode="horizontal" responsive 
+    @update:value="onChange" 
+  />
 </template>
 
 <script>
 import { h } from 'vue';
-import { NMenu, NIcon } from 'naive-ui';
 import { RouterLink } from 'vue-router';
+import { NMenu } from 'naive-ui';
 import axios from 'axios';
 
-function renderIcon(icon) {
-  return () => h(NIcon, null, { default: () => h(icon) });
-}
-
-const menuOptions = [
-  {
-    label: () => h(
-      RouterLink,
-      {
-        to: {
-          path: '/'
-        }
-      },
-      { default: () => '首页'}
-    ),
-    key: 'index'
-  },
-  {
-    label: '分类',
-    key: 'category',
-    children: []
-  },
-  {
-    label: () => h(
-      RouterLink,
-      {
-        to: {
-          name: "Login",
-        }
-      },
-      { default: () => '登录'}
-    ),
-    key: 'login'
-  },
-];
 
 export default {
   name: 'Nav',
   data() {
     return {
-      menuOptions
+      menuOptions: [
+        {
+          label: '首页',
+          key: 'index'
+        }
+      ]
     }
   },
   created() {
-    this.getCategories();
+    this.addCategoryToMenu();
+    this.addLoginOrUsercenterToMenu();
   },
   methods: {
-    getCategories() {
+    addCategoryToMenu() {
       axios.get('/api/blog/categories')
       .then(response => {
         if (response.data.status === 0) {
@@ -75,7 +49,13 @@ export default {
             item.key = cat.slug;
             categoryItems.push(item);
           }
-          this.menuOptions[1].children = categoryItems;
+          if (categoryItems.length > 0) {
+            this.menuOptions.push({
+              label: '分类',
+              key: 'category',
+              children: categoryItems
+            });
+          }
         } else {
           message.error('获取分类信息失败');
         }
@@ -84,6 +64,29 @@ export default {
         message.error('获取分类信息失败');
       });
     },
+    addLoginOrUsercenterToMenu() {
+      const userToken = sessionStorage.getItem('userToken');
+      if (!userToken) {
+        this.menuOptions.push({
+          label: '登录',
+          key: 'login'
+        });
+      } else {
+        this.menuOptions.push({
+          label: '后台',
+          key: 'user-center'
+        });
+      }
+    },
+    onChange(key, item) {
+      if (key === 'index') {
+        this.$router.push({path: '/'});
+      } else if (key === 'login') {
+        this.$router.push({name: 'Login'});
+      } else if (key === 'user-center') {
+        this.$router.push({name: 'UserCenter'});
+      }
+    }
   }
 }
 </script>
