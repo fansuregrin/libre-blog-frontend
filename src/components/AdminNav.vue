@@ -39,7 +39,7 @@ export default {
       } else if (key === 'category') {
         this.$router.push({name: 'ManageCategory'});
       } else if (key === 'user') {
-
+        this.$router.push({name: 'ManageUser'});
       } else if (key === 'tag') {
         this.$router.push({name: 'ManageTag'});
       }
