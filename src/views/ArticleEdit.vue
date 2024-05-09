@@ -108,7 +108,7 @@ export default {
           author: this.article.author.id,
           category: this.article.category.id,
           tags: this.tags,
-          except: this.article.except,
+          excerpt: this.article.excerpt,
           content: this.article.content
         },
         {
