@@ -115,8 +115,6 @@
           password: this.loginForm.password
         })
         .then(response => {
-          console.log("response status:", response.status);
-          console.log("data:", response.data);
           if (response.data.status == 0) {
             sessionStorage.setItem('userToken', response.data.token);
             this.$router.push({name: 'UserCenter'});
@@ -141,9 +139,7 @@
           password: this.signForm.password1,
           email: this.signForm.email
         })
-        .then(response => {
-          console.log(response.data);
-          
+        .then(response => {          
           if (response.data.status === 0) {
             message.success("注册成功，请登录");
             this.selectedTab = "login";

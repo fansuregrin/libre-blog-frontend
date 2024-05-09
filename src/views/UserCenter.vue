@@ -132,7 +132,6 @@ export default {
         }
       )
       .then( response => {
-        console.log('response status:', response.status);
         if (response.status != 200 || response.data == null) {
           message.error('获取用户信息失败');
           console.log('获取用户信息失败');
@@ -140,7 +139,6 @@ export default {
           this.$router.push({name: 'Login'});
           return;
         }  
-        console.log('data:', response.data)
         if (response.data.status == 0) {
           this.userInfo = response.data.user;
           this.loading = false;

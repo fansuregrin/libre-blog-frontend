@@ -75,13 +75,11 @@ export default {
     fetchData() {
       this.article = null;
       const id = this.$route.params.id;
-      console.log(`获取id为${id}的文章...`);
       
       axios.get(
         '/api/blog/article/'+id
       )
       .then(response => {
-        console.log("response status:", response.status);
         if (response.data.status == 0) {
           console.log('获取文章成功');
           this.article = response.data.article;

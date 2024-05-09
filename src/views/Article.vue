@@ -92,13 +92,11 @@
         this.error = this.article = null
         this.loading = true
         const id = this.$route.params.id;
-        console.log(`获取id为${id}的文章...`);
         
         axios.get(
           '/api/blog/article/'+id
         )
         .then(response => {
-          console.log("response status:", response.status);
           if (response.data.status == 0) {
             this.article = response.data.article;
             document.title = `${this.article?.title} - Libre Blog`;
