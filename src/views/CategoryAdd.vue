@@ -3,11 +3,11 @@
   <div class="container">
     <h2>添加分类</h2>
     <n-flex v-if="category" class="edit-area">
-      <n-form size="large" class="edit-form">
-        <n-form-item label="分类名称">
+      <n-form size="large" :model="category" :rules="rules" class="edit-form">
+        <n-form-item label="分类名称" path="name">
           <n-input v-model:value="category.name" placeholder="请输入分类的名称"/>
         </n-form-item>
-        <n-form-item label="分类缩略名">
+        <n-form-item label="分类缩略名" path="slug">
           <n-input v-model:value="category.slug" placeholder="请输入分类的缩略名"/>
         </n-form-item>
       </n-form>
@@ -35,6 +35,18 @@
           name: '',
           slug: ''
         },
+        rules: {
+          name: {
+            required: true,
+            message: "分类的名称不能为空",
+            trigger: ["blur", "input"]
+          },
+          slug: {
+            required: true,
+            message: "分类的缩略名不能为空",
+            trigger: ["blur", "input"]
+          }
+        }
       };
     },
     components: {
@@ -42,11 +54,11 @@
     },
     methods: {
       submitData() {
-        if (this.category?.name.trim() === '') {
+        if (this.category.name.trim() === '') {
           message.warning('分类的名称不能为空');
           return;
         }
-        if (this.category?.slug.trim() === '') {
+        if (this.category.slug.trim() === '') {
           message.warning('分类的缩略名不能为空');
           return;
         }
