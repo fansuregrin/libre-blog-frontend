@@ -25,6 +25,19 @@ h3 {
   color: darkgray;
 }
 
+.article {
+  width: 80%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .article {
+    width: 100%;
+  }
+}
+
 .icon {
   padding: 0 5px;
 }
@@ -49,4 +62,22 @@ h3 {
 .new-item {
   font-size: medium;
   padding: 0 5px;
+}
+
+pre {
+  position: relative;
+}
+ 
+.codeblock-numbering {
+  position: absolute;
+  top: 0px;
+  width: 10px;
+  text-align: center;
+  padding: 0 0;
+}
+
+.codeblock-numbering li {
+  list-style: none;
+  color: #AAA;
+  font-size: 1em;
 }

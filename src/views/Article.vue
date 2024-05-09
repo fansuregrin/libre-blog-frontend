@@ -55,6 +55,7 @@
   import 'highlight.js/styles/github.css'
   import Nav from '@/components/Nav.vue';
   import Foot from '@/components/Foot.vue';
+  import '@/assets/main.css';
 
   const { message } = createDiscreteApi(['message']);
 
@@ -131,8 +132,8 @@
             ul.appendChild(li)
           }
           // 3.给行号添加类名
-          ul.className = 'pre-numbering'
-          // 4.将ul节点加到 代码块
+          ul.className = 'codeblock-numbering'
+          // 4.将ul节点加到代码块
           ele.parentNode.appendChild(ul)
           hljs.highlightElement(ele);
         })
@@ -146,43 +147,3 @@
     }
 }
 </script>
-
-<style>
-.article {
-  width: 80%;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media screen and (max-width: 768px) {
-  .article {
-    width: 100%;
-  }
-}
-
-.article-meta-info {
-  margin-top: -15px;
-  margin-bottom: 20px;
-}
-
-pre {
-  position: relative;
-}
- 
-.pre-numbering {
-  position: absolute;
-  top: 0px;
-  width: 10px;
-  /* border-right: 1px solid #C3CCD0; */
-  /* background-color: #1C1D21; */
-  text-align: center;
-  padding: 1em 0;
-}
-
-.pre-numbering li {
-  list-style: none;
-  color: #AAA;
-  font-size: 1em;
-}
-</style>
