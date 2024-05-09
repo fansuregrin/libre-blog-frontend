@@ -136,7 +136,7 @@
         });
       },
       register() {
-        axios.post('/api/user/add', {
+        axios.post('/api/user/register', {
           username: this.signForm.username,
           password: this.signForm.password1,
           email: this.signForm.email
