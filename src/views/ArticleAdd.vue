@@ -14,7 +14,10 @@
           />
         </n-form-item>
         <n-form-item label="标签">
-          <n-dynamic-tags v-model:value="article.tags" />
+          <n-select v-model:value="article.tags"
+            label-field="name" value-field="name" placeholder="请选择或添加标签"
+            filterable multiple tag :options="tags"
+          />
         </n-form-item>
         <n-form-item label="摘要">
           <n-input type="textarea" autosize v-model:value="article.excerpt"
@@ -58,7 +61,7 @@
           tags: [],
         },
         categories: [],
-        
+        tags: [],
         textareSize: {
           minRows: 1,
           maxRows: 20
@@ -77,6 +80,19 @@
         }).catch(error => {
           console.log(error.message);
           message.error('获取分类信息失败');
+        });
+      },
+      getTags() {
+        axios.get('/api/blog/tags')
+        .then(response => {
+          if (response.data.status === 0) {
+            this.tags = response.data.tags;
+          } else {
+            message.error('获取标签信息失败');
+          }
+        }).catch(error => {
+          console.log(error.message);
+          message.error('获取标签信息失败');
         });
       },
       submitData() {
@@ -118,6 +134,7 @@
     },
     created() {
       this.getCategories();
+      this.getTags();
     }
   };
 </script>
