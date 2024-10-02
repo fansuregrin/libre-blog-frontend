@@ -37,104 +37,103 @@
 </template>
 
 <script>
-  import { NFlex, NInput, NForm, NFormItem, NSelect, NDynamicTags } from 'naive-ui';
-  import { createDiscreteApi } from 'naive-ui';
-  import axios from 'axios';
-  import '@/assets/main.css'
-  import AdminNav from '@/components/AdminNav.vue'
-  import AdminFoot from '@/components/AdminFoot.vue';
+import { createDiscreteApi } from 'naive-ui';
+import axios from 'axios';
+import '@/assets/main.css'
+import AdminNav from '@/components/AdminNav.vue'
+import AdminFoot from '@/components/AdminFoot.vue';
 
-  const { message } = createDiscreteApi(['message']);
+const { message } = createDiscreteApi(['message']);
 
-  export default {
-    name: 'ArticleAdd',
-    components: {
-      AdminNav, AdminFoot
-    },
-    data() {
-      return {
-        article: {
-          title: '',
-          category: null,
-          excerpt: '',
-          content: '',
-          tags: [],
-        },
-        categories: [],
+export default {
+  name: 'ArticleAdd',
+  components: {
+    AdminNav, AdminFoot
+  },
+  data() {
+    return {
+      article: {
+        title: '',
+        category: null,
+        excerpt: '',
+        content: '',
         tags: [],
-        textareSize: {
-          minRows: 1,
-          maxRows: 20
-        },
-      };
-    },
-    methods: {
-      getCategories() {
-        axios.get('/api/blog/categories')
-        .then(response => {
-          if (response.data.status === 0) {
-            this.categories = response.data.categories;
-          } else {
-            message.error('获取分类信息失败');
-          }
-        }).catch(error => {
-          console.log(error.message);
+      },
+      categories: [],
+      tags: [],
+      textareSize: {
+        minRows: 1,
+        maxRows: 20
+      },
+    };
+  },
+  methods: {
+    getCategories() {
+      axios.get('/api/blog/categories')
+      .then(response => {
+        if (response.data.status === 0) {
+          this.categories = response.data.categories;
+        } else {
           message.error('获取分类信息失败');
-        });
-      },
-      getTags() {
-        axios.get('/api/blog/tags')
-        .then(response => {
-          if (response.data.status === 0) {
-            this.tags = response.data.tags;
-          } else {
-            message.error('获取标签信息失败');
-          }
-        }).catch(error => {
-          console.log(error.message);
-          message.error('获取标签信息失败');
-        });
-      },
-      submitData() {
-        if (this.article?.title.trim() === '') {
-          message.warning('标题不能为空');
-          return;
         }
-        if (!this.article?.category) {
-          message.warning('请选择一个分类');
-          return;
-        }
-        const userToken = sessionStorage.getItem('userToken');
-        axios.post(
-          '/api/blog/article/add',
-          this.article,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`
-            }
-          }
-        ).then(response => {
-          if (response.data.status === 0) {
-            message.info('添加成功');
-            this.$router.push({name: 'ManageArticle'});
-          } else if (response.data.status === 3) {
-            message.error('登录失效，请重新登录');
-            sessionStorage.removeItem('userToken');
-            this.$router.push({name: 'Login'});
-          } else if (response.data.status === 4) {
-            message.error('您没有权限添加');
-          } else {
-            message.error('添加失败');
-          }
-        }).catch(error => {
-          console.log(error.message);
-          message.info('添加失败');
-        });
-      }
+      }).catch(error => {
+        console.log(error.message);
+        message.error('获取分类信息失败');
+      });
     },
-    created() {
-      this.getCategories();
-      this.getTags();
+    getTags() {
+      axios.get('/api/blog/tags')
+      .then(response => {
+        if (response.data.status === 0) {
+          this.tags = response.data.tags;
+        } else {
+          message.error('获取标签信息失败');
+        }
+      }).catch(error => {
+        console.log(error.message);
+        message.error('获取标签信息失败');
+      });
+    },
+    submitData() {
+      if (this.article?.title.trim() === '') {
+        message.warning('标题不能为空');
+        return;
+      }
+      if (!this.article?.category) {
+        message.warning('请选择一个分类');
+        return;
+      }
+      const userToken = sessionStorage.getItem('userToken');
+      axios.post(
+        '/api/blog/article/add',
+        this.article,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        }
+      ).then(response => {
+        if (response.data.status === 0) {
+          message.info('添加成功');
+          this.$router.push({name: 'ManageArticle'});
+        } else if (response.data.status === 3) {
+          message.error('登录失效，请重新登录');
+          sessionStorage.removeItem('userToken');
+          this.$router.push({name: 'Login'});
+        } else if (response.data.status === 4) {
+          message.error('您没有权限添加');
+        } else {
+          message.error('添加失败');
+        }
+      }).catch(error => {
+        console.log(error.message);
+        message.info('添加失败');
+      });
     }
-  };
+  },
+  created() {
+    this.getCategories();
+    this.getTags();
+  }
+};
 </script>

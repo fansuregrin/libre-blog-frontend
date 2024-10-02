@@ -8,7 +8,6 @@
 <script>
 import { h } from 'vue';
 import { RouterLink } from 'vue-router';
-import { NMenu } from 'naive-ui';
 import axios from 'axios';
 
 

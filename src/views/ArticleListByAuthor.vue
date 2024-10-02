@@ -9,7 +9,7 @@
         <n-flex class="article-meta-info">
           <span>
             <n-icon class="icon"><user-alt /></n-icon>
-            <router-link :to="'/blog/author/'+author.id" class="hyperlink">
+            <router-link :to="'/blog/author/'+author.id">
               {{ author.realname }}
             </router-link>
           </span>
@@ -38,71 +38,64 @@
 </template>
 
 <script>
-  import { createDiscreteApi } from 'naive-ui';
-  import axios from 'axios';
-  import { CalendarAlt, UserAlt } from '@vicons/fa'
-  import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
-  import Nav from '@/components/Nav.vue';
-  import Foot from '@/components/Foot.vue';
-  import '@/assets/main.css';
+import { createDiscreteApi } from 'naive-ui';
+import axios from 'axios';
+import { CalendarAlt, UserAlt } from '@vicons/fa'
+import Nav from '@/components/Nav.vue';
+import Foot from '@/components/Foot.vue';
+import '@/assets/main.css';
+import { formatDate, formatDateTime } from '@/utils/common';
 
-  const { message } = createDiscreteApi(['message']);
+const { message } = createDiscreteApi(['message']);
 
-  export default {
-    name: 'ArticleListByAuthor',
-    components: {
-      Nav, Foot, CalendarAlt, UserAlt
+export default {
+  name: 'ArticleListByAuthor',
+  components: {
+    Nav, Foot, CalendarAlt, UserAlt
+  },
+  data() {
+    return {
+      author: {},
+      articles: [],
+      num_pages: 1,
+      page: 1,
+      formatDate, formatDateTime
+    };
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (newVal, oldVal) => { this.fetchData(newVal); },
+      { immediate: true }
+    );
+  },
+  methods: {
+    goToArticle(id) {
+      this.$router.push(`/blog/article/${id}`);
     },
-    data() {
-      return {
-        author: {},
-        articles: [],
-        num_pages: 1,
-        page: 1
-      };
+    goToPage(page) {
+      const id = this.$route.params.id;
+      this.$router.push(`/blog/author/${id}/${page}`);
     },
-    created() {
-      this.$watch(
-        () => this.$route.params,
-        (newVal, oldVal) => { this.fetchData(newVal); },
-        { immediate: true }
-      );
-    },
-    methods: {
-      goToArticle(id) {
-        this.$router.push(`/blog/article/${id}`);
-      },
-      goToPage(page) {
-        const id = this.$route.params.id;
-        this.$router.push(`/blog/author/${id}/${page}`);
-      },
-      formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString(this.$i18n.locale);
-      },
-      formatDateTime(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleString(this.$i18n.locale);
-      },
-      fetchData(params) {
-        if (params.page) {
-          this.page = Number(params.page);
-        }
-        axios.get(`/api/blog/user/${params.id}/${this.page}`)
-        .then(response => {
-          if (response.data.status === 0) {
-            this.author = response.data.author;
-            this.num_pages = response.data.num_pages;
-            this.articles = response.data.articles;
-            document.title = `${this.author?.realname} 发布的文章 - Libre Blog`;
-          } else {
-            message.error('获取文章列表失败');
-          }
-        }).catch(error => {
-          message.error('获取文章列表失败');
-          console.log(error.message);
-        });
+    fetchData(params) {
+      if (params.page) {
+        this.page = Number(params.page);
       }
+      axios.get(`/api/blog/user/${params.id}/${this.page}`)
+      .then(response => {
+        if (response.data.status === 0) {
+          this.author = response.data.author;
+          this.num_pages = response.data.num_pages;
+          this.articles = response.data.articles;
+          document.title = `${this.author?.realname} 发布的文章 - Libre Blog`;
+        } else {
+          message.error('获取文章列表失败');
+        }
+      }).catch(error => {
+        message.error('获取文章列表失败');
+        console.log(error.message);
+      });
     }
-  };
+  }
+};
 </script>

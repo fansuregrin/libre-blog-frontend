@@ -8,7 +8,7 @@
 </template>
   
 <script>
-import { NMenu, createDiscreteApi } from 'naive-ui';
+import { createDiscreteApi } from 'naive-ui';
 import axios from 'axios';
 
 const { message } = createDiscreteApi(['message']);

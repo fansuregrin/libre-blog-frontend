@@ -9,7 +9,7 @@
       <n-flex class="article-meta-info">
         <span>
           <n-icon class="icon"><user-alt /></n-icon>
-          <router-link :to="'/blog/author/'+article.author.id" class="hyperlink">
+          <router-link :to="'/blog/author/'+article.author.id">
             {{ article.author.realname }}
           </router-link>
         </span>
@@ -38,72 +38,65 @@
 </template>
 
 <script>
-  import { createDiscreteApi } from 'naive-ui';
-  import axios from 'axios';
-  import { CalendarAlt, UserAlt } from '@vicons/fa'
-  import { NCard, NButton, NIcon, NFlex, NPagination } from 'naive-ui'
-  import Nav from '@/components/Nav.vue';
-  import Foot from '@/components/Foot.vue';
-  import '@/assets/main.css';
+import { createDiscreteApi } from 'naive-ui';
+import axios from 'axios';
+import { CalendarAlt, UserAlt } from '@vicons/fa'
+import Nav from '@/components/Nav.vue';
+import Foot from '@/components/Foot.vue';
+import '@/assets/main.css';
+import { formatDate, formatDateTime } from '@/utils/common';
 
-  const { message } = createDiscreteApi(['message']);
+const { message } = createDiscreteApi(['message']);
 
-  export default {
-    name: 'ArticleListByTag',
-    components: {
-      Nav, Foot, CalendarAlt, UserAlt
+export default {
+  name: 'ArticleListByTag',
+  components: {
+    Nav, Foot, CalendarAlt, UserAlt
+  },
+  data() {
+    return {
+      tag: {},
+      articles: [],
+      numPages: 1,
+      page: 1,
+      formatDate, formatDateTime
+    };
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (newVal, oldVal) => { this.fetchData(newVal); },
+      { immediate: true }
+    );
+  },
+  methods: {
+    goToArticle(id) {
+      this.$router.push(`/blog/article/${id}`);
     },
-    data() {
-      return {
-        tag: {},
-        articles: [],
-        numPages: 1,
-        page: 1
-      };
+    goToPage(page) {
+      const slug = this.$route.params.slug;
+      this.$router.push(`/blog/tag/${slug}/${page}`);
     },
-    created() {
-      this.$watch(
-        () => this.$route.params,
-        (newVal, oldVal) => { this.fetchData(newVal); },
-        { immediate: true }
-      );
-    },
-    methods: {
-      goToArticle(id) {
-        this.$router.push(`/blog/article/${id}`);
-      },
-      goToPage(page) {
-        const slug = this.$route.params.slug;
-        this.$router.push(`/blog/tag/${slug}/${page}`);
-      },
-      formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString(this.$i18n.locale);
-      },
-      formatDateTime(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleString(this.$i18n.locale);
-      },
-      fetchData(params) {
-        if (params.page) {
-          this.page = Number(params.page);
-        }
-        const slug = encodeURIComponent(params.slug);
-        axios.get(`/api/blog/tag/${slug}/${this.page}`)
-        .then(response => {
-          if (response.data.status === 0) {
-            this.tag = response.data.tag;
-            this.numPages = response.data.num_pages;
-            this.articles = response.data.articles;
-            document.title = `标签 ${this.tag?.name} 下的文章 - Libre Blog`;
-          } else {
-            message.error('获取文章列表失败');
-          }
-        }).catch(error => {
-          message.error('获取文章列表失败');
-          console.log(error.message);
-        });
+    fetchData(params) {
+      if (params.page) {
+        this.page = Number(params.page);
       }
+      const slug = encodeURIComponent(params.slug);
+      axios.get(`/api/blog/tag/${slug}/${this.page}`)
+      .then(response => {
+        if (response.data.status === 0) {
+          this.tag = response.data.tag;
+          this.numPages = response.data.num_pages;
+          this.articles = response.data.articles;
+          document.title = `标签 ${this.tag?.name} 下的文章 - Libre Blog`;
+        } else {
+          message.error('获取文章列表失败');
+        }
+      }).catch(error => {
+        message.error('获取文章列表失败');
+        console.log(error.message);
+      });
     }
-  };
+  }
+};
 </script>

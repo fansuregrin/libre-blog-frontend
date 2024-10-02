@@ -8,7 +8,7 @@
       <n-flex class="article-meta-info">
         <span >
           <n-icon class="icon"><user-alt /></n-icon>
-          <router-link :to="'/blog/author/'+article.author.id" class="hyperlink">
+          <router-link :to="'/blog/author/'+article.author.id">
             {{ article.author.realname }}
           </router-link>
         </span>
@@ -31,35 +31,28 @@
         </n-flex>
       </template>
     </n-card>
-    <n-pagination v-model:page="page" v-model:page-count="num_pages" @update:page="goToPage" :page-slot="5"></n-pagination>
+    <n-pagination v-model:page="page" v-model:page-count="num_pages"
+      @update:page="goToPage" :page-slot="5"></n-pagination>
   </div>
   <foot />
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import { NCard, NButton, NIcon, NFlex, NPagination, NTooltip } from 'naive-ui'
 import { CalendarAlt, UserAlt } from '@vicons/fa'
-import { createDiscreteApi } from 'naive-ui';
-import axios from 'axios';
-import Nav from '@/components/Nav.vue';
-import Foot from '@/components/Foot.vue';
-import '@/assets/main.css';
+import { createDiscreteApi } from 'naive-ui'
+import axios from 'axios'
+import { formatDate, formatDateTime } from '@/utils/common'
+import Nav from '@/components/Nav.vue'
+import Foot from '@/components/Foot.vue'
+import '@/assets/main.css'
 
 const { message } = createDiscreteApi(['message']);
 
-export default defineComponent({
+export default {
   name: 'ArticleList',
   components: {
     CalendarAlt, UserAlt,
     Nav, Foot
-  },
-  data() {
-    return {
-      articles: [],
-      page: 1,
-      num_pages: 1,
-    }
   },
   methods: {
     goToPage(page) {
@@ -67,14 +60,6 @@ export default defineComponent({
         name: 'ArticleList',
         params: { page: page }
       });
-    },
-    formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString(this.$i18n.locale);
-    },
-    formatDateTime(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleString(this.$i18n.locale);
     },
     fetchData(params) {
       if (params.page) {
@@ -100,6 +85,15 @@ export default defineComponent({
       this.$router.push(`/blog/article/${id}`);
     }
   },
+  data() {
+    return {
+      articles: [],
+      page: 1,
+      num_pages: 1,
+      formatDate,
+      formatDateTime
+    }
+  },
   created() {
     this.$watch(
       () => this.$route.params,
@@ -112,6 +106,5 @@ export default defineComponent({
       { immediate: true }
     );
   }
-});
-
+};
 </script>
